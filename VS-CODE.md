@@ -6,7 +6,9 @@ Features of VS-Code-
 5.Icons-VS Code offers icon theming so that you can switch between icon themes in the same manner you'd switch code themes.
 
 Plugins of VS code-
+
 1.Code Spell Checker-Code Spell Checker is a spell checker that considers camelCase code. The blue underlines make it obvious which words need to be corrected.
+
 2.Sort JS object keys-Sort JS object keys is a tool to alphabetically sort the keys for a selected JavaScript object. 
 3.Git-Git supports basic Git capabilities. On the bottom bar of the following screenshot, it shows the current branch name, dirty indicators, and the number of incoming and outgoing commits of the current branch
 4.CSS Peek-WIth this extension you can trace the definitions of CSS classes and ids in your stylesheets. When you right click on a selector in your HTML files, choosing the options.
