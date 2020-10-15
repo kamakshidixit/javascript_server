@@ -67,6 +67,6 @@ Running database migrations (e.g. manage.py migrate in Django, rake db:migrate i
 Running a console (also known as a REPL shell) to run arbitrary code or inspect the app’s models against the live database. Most languages provide a REPL by running the interpreter without any arguments (e.g. python or perl) or in some cases have a separate command (e.g. irb for Ruby, rails console for Rails).
 Running one-time scripts committed into the app’s repo (e.g. php scripts/fix_bad_records.php).
 
-![](https://res.cloudinary.com/practicaldev/image/fetch/s--FbbXt2HS--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/i/pbxdh552mvgz0zvgputb.png)
+![](https://res.cloudinary.com/practicaldev/image/fetch/s--FbbXt2HS--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/i/pbxdh552mvgz0zvgputb.png )
 
 
