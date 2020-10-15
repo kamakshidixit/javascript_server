@@ -1,9 +1,24 @@
-root=true
+root = true
 
 [*]
-charset = utf-8
+charset = latin1
 end_of_line = lf
 insert_final_newline = true
 indent_style = space
 indent_size = 2
-trim_trailing_whitespace="true"
+trim_trailing_whitespace = true
+
+[CLIENT_SERVER.md]
+indent_style = tab
+trim_trailing_whitespace = true
+indent_size = 2
+
+[MERN_STACK.md]
+indent_style = tab
+trim_trailing_whitespace = true
+indent_size = 4
+
+[12Factor_APP.md]
+indent_style = space
+trim_trailing_whitespace = true
+indent_size = 3

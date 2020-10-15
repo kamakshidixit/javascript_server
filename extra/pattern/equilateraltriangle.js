@@ -2,7 +2,7 @@ function createequilatral(n)
 {
 // using for white space
 let s = "";
-// using for rows
+// using for loops
 let j = n;
 for(let i=1;i<=n;i++){
 s=" ".repeat(j);
@@ -13,3 +13,4 @@ j--;
 }
 
 createequilatral(10)
+
