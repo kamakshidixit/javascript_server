@@ -9,7 +9,7 @@ s=" ".repeat(j);
 console.log(s,'* '.repeat(i));
 s="";
 j--;
-}
+}     
 }
 
 createequilatral(10)
