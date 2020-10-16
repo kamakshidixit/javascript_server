@@ -12,5 +12,5 @@ j--;
 }     
 }
 
-createequilatral(10)
+createequilatral(process.argv[2])
 
