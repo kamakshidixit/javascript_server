@@ -18,4 +18,4 @@ j++;
 }
 }
 
-creatediamond(process.arrgv[2])
+creatediamond(process.argv[2])
