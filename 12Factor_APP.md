@@ -35,7 +35,7 @@ A backing service is any service the app consumes over the network as part of it
 -  Build, release, run:-Strictly separate build and run stages
 A codebase is transformed into a (non-development) deploy through three stages:
 The build stage is a transform which converts a code repo into an executable bundle known as a build. Using a version of the code at a commit specified by the deployment process, the build stage fetches vendors dependencies and compiles binaries and assets.
-The release stage takes the build produced by the build stage and combines it with the deploy’s current config. The resulting release contains both the build and the config and is ready for immediate execution in the execution environment.
+The release stage takes the build produced by the build stage and combines it with the deploy’s current config. The resulting release contains both the build and the config and is ready for immediate execution in the execution environment. 
 The run stage (also known as “runtime”) runs the app in the execution environment, by launching some set of the app’s processes against a selected release.
 
 -  Processes:-Execute the app as one or more stateless processes
@@ -67,6 +67,6 @@ Running database migrations (e.g. manage.py migrate in Django, rake db:migrate i
 Running a console (also known as a REPL shell) to run arbitrary code or inspect the app’s models against the live database. Most languages provide a REPL by running the interpreter without any arguments (e.g. python or perl) or in some cases have a separate command (e.g. irb for Ruby, rails console for Rails).
 Running one-time scripts committed into the app’s repo (e.g. php scripts/fix_bad_records.php).
 
-![](https://res.cloudinary.com/practicaldev/image/fetch/s--FbbXt2HS--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/i/pbxdh552mvgz0zvgputb.png)
+![](https://res.cloudinary.com/practicaldev/image/fetch/s--FbbXt2HS--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/i/pbxdh552mvgz0zvgputb.png )
 
 
