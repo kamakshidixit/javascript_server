@@ -1,6 +1,6 @@
 import validateEmail from './helper';
 
-  export default function validateUsers(users){
+  export default function validateUsers(users : IUsers[]) : void {
   let vuser=[];
   let iuser=[];
   let icount=0;

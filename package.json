@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/kamakshidixit/javascript_server#readme",
   "dependencies": {
-
     "commitizen": "^4.2.2",
     "eslint": "^7.11.0",
     "husky": "^4.3.0",

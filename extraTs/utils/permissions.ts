@@ -1,20 +1,6 @@
-const permissions = {
-    'getUsers': {
-    all: ['head-trainer'],
-    read : ['trainee', 'trainer'],
-    write : ['trainer'],
-    delete: [],
-    },
-    'getAccess' : {
-        all : ['trainer'],
-        read : ['trainee','head-trainer'],
-        write : ['trainer'],
-        delete : ['head-trainer'],
-    }
-}
+import { permissions } from '/constants';
 
-console.log(permissions);
-export function hasPermission(moduleName, role, permissionType){
+export function hasPermission(moduleName : String, role : String, permissionType : String) :Boolean {
     for (const [key,value] of Object.entries(permissions)){
         if (key === moduleName){
             if(value.all.includes(role)){

@@ -1,4 +1,4 @@
-export const permissions = {
+const permissions : IPermissions  = {
   'getUsers': {
   all: ['head-trainer'],
   read : ['trainee', 'trainer'],
@@ -13,21 +13,21 @@ export const permissions = {
   }
 }
 
-export let users=[
+const users : IUsers [] = [
   {
   traineeEmail: 'trainee1@successive.tech',
-  reviewerEmail: 'reviewer1@successive.tech',
+  reviewerEmail: 'reviewer1@successive.tech'
   },
   {
   traineeEmail: 'mnr@gmail.com',
-  reviewerEmail: 'mnfre@gmail.com',
+  reviewerEmail: 'mnfre@gmail.com'
   },
   {
   traineeEmail: 'trainee2@successive.tech',
-  reviewerEmail: 'reviewer2@successive.tech',
+  reviewerEmail: 'reviewer2@successive.tech'
   },
   {
   traineeEmail: 'trainee3@successive.tech',
-  reviewerEmail: 'reviewer3@successive.tech',
+  reviewerEmail: 'reviewer3@successive.tech'
   }
   ]
