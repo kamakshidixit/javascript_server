@@ -1,7 +1,7 @@
-import diamond from './diamond';
-import equilateraltriangle from './equilateraltriangle';
+import creatediamond from './diamond';
+import createequilatral from './equilateraltriangle';
 
 export {
-    diamond,
-    equilateraltriangle
-}
+    creatediamond,
+    createequilatral
+};

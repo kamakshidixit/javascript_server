@@ -1,16 +1,16 @@
 interface IUsers {
-  traineeEmail : String;
-  reviewerEmail : String;
+  traineeEmail: string;
+  reviewerEmail: string;
 }
 
 type access = {
-  all : String[];
-  read : String[];
-  write : String[];
-  delete : String[];
-}
+  all: string[];
+  read: string[];
+  write: string[];
+  delete: string[];
+};
 
 interface IPermissions {
-  getUsers : access;
-  getAccess : access;
-};
+  getUsers: access;
+  getAccess: access;
+}

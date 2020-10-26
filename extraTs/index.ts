@@ -1,9 +1,8 @@
-//console.log("hi");
-import {diamond,equilateraltriangle} from '../extra/pattern';
-import {hasPermission,validateUsers} from '../extra/utils';
-import {permissions , users} from '../extra/constant';
-diamond(4);
-equilateraltriangle(4);
-hasPermission('getAccess','tainer','all');
+import { creatediamond , createequilatral } from './pattern';
+import { hasPermission, validateUsers } from './utils';
+import { permissions , users } from './constant';
+creatediamond(4);
+createequilatral(4);
+hasPermission(permissions.getUsers, 'tainer', 'all');
 validateUsers(users);
 
