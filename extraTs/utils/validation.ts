@@ -1,4 +1,4 @@
-import validateEmail from '../helper';
+import validateEmail from './helper';
 
   export default function validateUsers(users : IUsers[]) : void {
   let vuser=[];
