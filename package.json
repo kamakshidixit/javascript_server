@@ -38,10 +38,13 @@
   "keywords": [],
   "husky": {
     "hooks": {
-      "pre-commit": "npm run",
-      "pre-push": "npm run",
-      "...": "..."
+      "hooks": {
+        "pre-commit": "npm run",
+        "pre-push": "npm run",
+        "...": "..."
+      }
     }
   }
 }
+
 
