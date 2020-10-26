@@ -14,9 +14,9 @@ export const users: IUsers[] = [
   {
   traineeEmail: 'trainee3@successive.tech',
   reviewerEmail: 'reviewer3@successive.tech'
-  }
-];
+ }
 
+];
 
 
 export const permissions: IPermissions  = {
@@ -30,7 +30,7 @@ export const permissions: IPermissions  = {
       all : ['trainer'],
       read : ['trainee', 'head-trainer'],
       write : ['trainer'],
-      delete : ['head-trainer'],
+      delete : ['head-trainer']
   }
 
 };
