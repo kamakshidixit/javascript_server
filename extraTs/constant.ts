@@ -18,6 +18,7 @@ export const users: IUsers[] = [
 ];
 
 
+
 export const permissions: IPermissions  = {
   'getUsers': {
   all: ['head-trainer'],
