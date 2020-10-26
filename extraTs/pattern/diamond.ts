@@ -1,10 +1,10 @@
-export default function creatediamond(n)
+export default function creatediamond(n : number) :void
 {
 // using for white space
-let s = "";
+let s:string = "";
 // using for rows
-let j = n;
-for(let i=1;i<=n;i++){
+let j:number= n;
+for(let i:number=1;i<=n;i++){
 s=" ".repeat(j);
 console.log(s,'* '.repeat(i));
 s="";
@@ -18,4 +18,3 @@ j++;
 }
 }
 
-creatediamond(process.argv[2])

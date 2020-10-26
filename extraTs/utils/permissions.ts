@@ -1,4 +1,4 @@
-import { permissions } from '/constants';
+import { permissions } from '../constant';
 
 export function hasPermission(moduleName : String, role : String, permissionType : String) :Boolean {
     for (const [key,value] of Object.entries(permissions)){

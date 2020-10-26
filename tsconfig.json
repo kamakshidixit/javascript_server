@@ -2,6 +2,7 @@
   "compilerOptions": {
   "module": "commonjs",
   "target": "es6",
+  "lib": ["es6", "dom", "es2017"],
   "noImplicitAny": false,
   "moduleResolution": "node",
   "allowSyntheticDefaultImports": true,
@@ -25,4 +26,3 @@
   ],
   "types": ["src/types"]
   }
-

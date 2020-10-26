@@ -13,7 +13,6 @@
   "rules": {
 
   "class-name": true,
-
   "comment-format": [
 
   true,
