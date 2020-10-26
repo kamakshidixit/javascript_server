@@ -5,3 +5,5 @@ export default function validateEmail(email) {
   const domain = email.split('@')[1];
   return reg.test(email) && (domain === 'successive.tech');
   }
+
+

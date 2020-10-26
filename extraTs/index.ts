@@ -5,4 +5,3 @@ creatediamond(4);
 createequilatral(4);
 hasPermission(permissions.getUsers, 'tainer', 'all');
 validateUsers(users);
-

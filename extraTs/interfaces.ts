@@ -10,6 +10,7 @@ type access = {
   delete: string[];
 };
 
+
 interface IPermissions {
   getUsers: access;
   getAccess: access;
