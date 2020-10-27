@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 export default function creatediamond(n)
-=======
 function creatediamond(n)
->>>>>>> 2e998150278c9c22a887ed5997640607d31a147c
 {
 // using for white space
 let s = "";
@@ -21,5 +18,3 @@ s="";
 j++;
 }
 }
-
-creatediamond(process.argv[2])
