@@ -12,6 +12,7 @@
 
   "rules": {
 
+
   "class-name": true,
   "comment-format": [
 
@@ -20,6 +21,7 @@
   "check-space"
 
   ],
+
 
   "indent": [
 

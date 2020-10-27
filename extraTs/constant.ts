@@ -1,19 +1,4 @@
-export const permissions : IPermissions  = {
-  'getUsers': {
-  all: ['head-trainer'],
-  read : ['trainee', 'trainer'],
-  write : ['trainer'],
-  delete: [],
-  },
-  'getAccess' : {
-      all : ['trainer'],
-      read : ['trainee','head-trainer'],
-      write : ['trainer'],
-      delete : ['head-trainer'],
-  }
-}
-
-export const users : IUsers [] = [
+export const users: IUsers[] = [
   {
   traineeEmail: 'trainee1@successive.tech',
   reviewerEmail: 'reviewer1@successive.tech'
@@ -29,5 +14,23 @@ export const users : IUsers [] = [
   {
   traineeEmail: 'trainee3@successive.tech',
   reviewerEmail: 'reviewer3@successive.tech'
+ }
+
+];
+
+
+export const permissions: IPermissions  = {
+  'getUsers': {
+  all: ['head-trainer'],
+  read : ['trainee', 'trainer'],
+  write : ['trainer'],
+  delete: [],
+  },
+  'getAccess' : {
+      all : ['trainer'],
+      read : ['trainee', 'head-trainer'],
+      write : ['trainer'],
+      delete : ['head-trainer']
   }
-  ]
+
+};
