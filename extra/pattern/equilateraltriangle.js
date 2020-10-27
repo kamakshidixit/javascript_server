@@ -1,3 +1,4 @@
+export default function createequilatral(n)
 function createequilatral(n)
 {
 // using for white space
@@ -9,7 +10,7 @@ s=" ".repeat(j);
 console.log(s,'* '.repeat(i));
 s="";
 j--;
-}     
+}
 }
 
 createequilatral(process.argv[2])

@@ -1,3 +1,4 @@
+export default function creatediamond(n)
 function creatediamond(n)
 {
 // using for white space
@@ -17,5 +18,3 @@ s="";
 j++;
 }
 }
-
-creatediamond(process.argv[2])

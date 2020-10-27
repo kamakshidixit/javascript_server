@@ -14,7 +14,7 @@ const permissions = {
 }
 
 console.log(permissions);
-function hasPermission(moduleName, role, permissionType){
+export function hasPermission(moduleName, role, permissionType){
     for (const [key,value] of Object.entries(permissions)){
         if (key === moduleName){
             if(value.all.includes(role)){
@@ -40,11 +40,11 @@ function hasPermission(moduleName, role, permissionType){
     }
 }
 
-console.log("'getAccess','trainer','all' : " ,hasPermission('getAccess','tainer','all'));
-console.log("'getAccess','head-trainer','read' : " ,hasPermission('getAccess','head-trainer','read'));
-console.log("'getUsers','trainer','write' : " ,hasPermission('getUsers','trainer','write'));
-console.log("'getUsers','trainer','delete' : " ,hasPermission('getUsers','head-tainer','delete'));
- 
+//console.log("'getAccess','trainer','all' : " ,hasPermission('getAccess','tainer','all'));
+//console.log("'getAccess','head-trainer','read' : " ,hasPermission('getAccess','head-trainer','read'));
+//console.log("'getUsers','trainer','write' : " ,hasPermission('getUsers','trainer','write'));
+//console.log("'getUsers','trainer','delete' : " ,hasPermission('getUsers','head-tainer','delete'));
 
 
-    
+
+
