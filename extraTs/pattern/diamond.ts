@@ -16,7 +16,6 @@ console.log(s, ' *'.repeat(i));
 s = '';
 j++;
 }
-
 }
 
 

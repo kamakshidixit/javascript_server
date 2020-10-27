@@ -1,6 +1,4 @@
-import { permissions } from '../constant';
-
-export function hasPermission(moduleName: string, role: string, permissionType: string): boolean {
+export function hasPermission(moduleName, role: string, permissionType: string): boolean {
   const {all, read, write, Delete= {}} = moduleName;
 
   let f = all.includes(role);
