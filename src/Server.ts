@@ -15,10 +15,8 @@ class Server {
     }
     SetupRoutes() {
         this.app.use('/health-check', (req, res, next) => {
-        console.log('Inside second middleware');
             res.send('i am ok');
         });
-
         this.app.use(notFoundHandler);
 
         this.app.use(errorHandler);
