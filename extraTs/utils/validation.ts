@@ -1,16 +1,15 @@
 import validateEmail from './helper';
-
-  export default function validateUsers(users: IUsers[]): void {
-  const vuser = [];
-  const iuser = [];
-  let icount = 0;
-  let vcount = 0;
-  users.forEach(({traineeEmail, reviewerEmail}) => {
-  if (validateEmail(traineeEmail) && validateEmail(reviewerEmail)) {
-   icount += 1;
-   vuser.push({traineeEmail, reviewerEmail});
-   return icount;
-  }
+export default function validateUsers(users: IUsers[]): void {
+const vuser = [];
+const iuser = [];
+ let icount = 0;
+ let vcount = 0;
+ users.forEach(({traineeEmail, reviewerEmail}) => {
+ if (validateEmail(traineeEmail) && validateEmail(reviewerEmail)) {
+ icount += 1;
+ vuser.push({traineeEmail, reviewerEmail});
+ return icount;
+ }
   else {
     vcount += 1;
     iuser.push({traineeEmail, reviewerEmail});

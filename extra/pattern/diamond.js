@@ -6,15 +6,15 @@ let s = "";
 // using for rows
 let j = n;
 for(let i=1;i<=n;i++){
-s=" ".repeat(j);
+s = " ".repeat(j);
 console.log(s,'* '.repeat(i));
-s="";
+s = "";
 j--;
 }
-for(let i=n;i>=1;i--){
-s=" ".repeat(j);
+for(let i = n; i >= 1; i--){
+s = " ".repeat(j);
 console.log(s,' *'.repeat(i));
-s="";
+s = "";
 j++;
 }
 }

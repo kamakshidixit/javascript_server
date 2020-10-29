@@ -11,7 +11,7 @@ console.log(s,'* '.repeat(i));
 s="";
 j--;
 }
-}
+}     
 
 createequilatral(process.argv[2])
 
