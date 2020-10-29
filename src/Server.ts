@@ -17,6 +17,7 @@ class Server {
         this.app.use('/health-check', (req, res, next) => {
             res.send('i am ok');
         });
+
         this.app.use(notFoundHandler);
 
         this.app.use(errorHandler);
