@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import traineeController from './controller';
+import traineeController from './Controller';
 import validationHandler from '../../libs/validationHandler';
 import validation from './validation';
 const traineeRouter =  Router();
