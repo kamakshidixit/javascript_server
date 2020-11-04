@@ -1,5 +1,3 @@
-
-import { rejects } from 'assert';
 import * as mongoose from 'mongoose';
 
 class Database {
@@ -17,8 +15,11 @@ class Database {
 
   });
 }
-  static disconnect() {
-    console.log("Inside disconnect")
+ static disconnect() {
+    console.log('Disconnected');
+    mongoose.connection.close();
+
   }
 }
 export default Database;
+

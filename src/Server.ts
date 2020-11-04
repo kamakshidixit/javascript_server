@@ -3,6 +3,7 @@ import * as bodyparser from 'body-parser';
 import { notFoundHandler, errorHandler } from './libs/routes';
 import routes from  './router';
 import Database from './libs/Database';
+import { disconnect } from 'process';
 
 class Server {
 
@@ -40,11 +41,15 @@ class Server {
             if (err) {
                 console.log(err);
             }
+            else{
             console.log(`App is running on port ${PORT}`);
-
-        });
-      });
+            Database.disconnect();
+            }
+           });
+      })
+       .catch(err => console.log(err));
         return this;
     }
 }
 export default Server;
+
