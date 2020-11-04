@@ -29,6 +29,7 @@ class Server {
 
     public initBodyParser() {
       this.app.use(bodyparser.json());
+      this.app.use(bodyparser.urlencoded({ extended: false }))
     }
     run() {
         const {app, config: {PORT}} = this;
