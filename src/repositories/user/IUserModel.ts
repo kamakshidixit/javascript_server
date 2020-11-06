@@ -7,3 +7,4 @@ export default interface IUsermodel extends mongoose.Document {
   role: string;
   password: string;
 }
+
