@@ -15,7 +15,7 @@ UserRouter.route('/')
 .delete(UserController.delete);
 
 UserRouter.route('/me')
-.get(authMiddleWare ( permissions.getUsers, 'all' ), UserController.me);
+.get(authMiddleWare ( 'getUsers', 'all' ), UserController.me);
 
 UserRouter.route('/login')
 .post( validationHandler ( config.login) , UserController.login );
