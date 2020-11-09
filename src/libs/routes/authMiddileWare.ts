@@ -6,14 +6,19 @@ export default (module, permissionType) => (req, res, next) => {
   console.log('The Config is', module, permissionType);
 
   console.log('Header is', req.headers['authorization']);
-try {
-  const tokens = req.headers['authorization'];
-  const decodedUser = jwt.verify(tokens, 'qwertyuiopasdfghjklzxcvbnm123456');
-  console.log('User: ', decodedUser);
-  console.log('Role',decodedUser.role);
-  if(hasPermission(module,decodedUser.role,permissionType)){
-  next();
-}else{
+  try {
+    console.log( 'config is', module, permissionType );
+    const token = req.headers.authorization;
+    //console.log( token );
+    const User = jwt.verify( token, 'qwertyuiopasdfghjklzxcvbnm123456' );
+    console.log( 'user', User.result );
+    req.userData = User.result;
+    console.log( User.result.role );
+    const result = hasPermission( module , User.result.role , permissionType );
+    console.log( 'result is', result );
+    if ( result === true )
+        next();
+else{
   next({
     error:403,
     message: "Unauthorization"
@@ -27,5 +32,4 @@ catch (err) {
    code: 403
  });
 }
-
-};
+}
