@@ -43,7 +43,7 @@ class Server {
             }
             else{
             console.log(`App is running on port ${PORT}`);
-            Database.disconnect();
+            //Database.disconnect();
             }
            });
       })
@@ -52,4 +52,5 @@ class Server {
     }
 }
 export default Server;
+
 
