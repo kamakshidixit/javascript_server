@@ -54,8 +54,22 @@ const config = {
       isObject: true,
       custom: (dataToUpdate) => {
         console.log('dataToUpdate' , dataToUpdate);
-      },
     }
   }
-};
+},
+  login: {
+    email: {
+        required: true,
+        string: true,
+        in: ['body']
+    },
+    password: {
+        required: true,
+        string: true,
+        in: ['body']
+    }
+  }
+
+}
+
   export default config;
