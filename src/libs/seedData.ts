@@ -4,12 +4,12 @@ const userRepository: UserRepository =  new UserRepository();
 export default() => {
   userRepository.count()
  .then(res => {
-    if(res === 0) {
+    if (res === 0) {
       console.log('Data seeding in progress');
       userRepository.create({
         name: 'Head Trainer',
         role: 'Head-Trainer',
-        email:'head.trainee@successive.tech',
+        email: 'head.trainee@successive.tech',
         password: 'SiteNoida'
       });
       userRepository.create({
@@ -22,5 +22,5 @@ export default() => {
     })
     .catch(err => console.log(err));
 
-  }
+  };
 

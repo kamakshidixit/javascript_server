@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import {userModel} from './UserModel';
+import { userModel } from './UserModel';
 import IUserModel from './IUserModel';
 import { Options } from 'body-parser';
 
@@ -13,8 +13,9 @@ export default class UserRepository {
     return userModel.findOne(query).lean();
   }
 
+  // tslint:disable-next-line: no-shadowed-variable
   public find(query, projection ?: any, Options ?: any): any {
-    return userModel.find(query, projection, Options)
+    return userModel.find(query, projection, Options);
   }
 
   public create(data: any): Promise<IUserModel> {

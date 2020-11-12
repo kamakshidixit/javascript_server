@@ -47,7 +47,7 @@ class UserController {
   }
   }
 
-  update(req: Request, res:Response, next: NextFunction) {
+  update(req: Request, res: Response, next: NextFunction) {
   try {
   console.log('Inside put method of trainee controller');
   res.send({
@@ -64,7 +64,7 @@ class UserController {
   }
   }
 
-  delete(req:Request, res: Response, next: NextFunction) {
+  delete(req: Request, res: Response, next: NextFunction) {
   try {
   console.log('Inside delete method of trainee controller');
   res.send({
@@ -81,7 +81,7 @@ class UserController {
   }
   }
 
-  login( req:Request, res: Response, next: NextFunction ) {
+  login( req: Request, res: Response, next: NextFunction ) {
     try { const { email , password } = req.body;
 
     userModel.findOne ( { email: req.body.email }, ( err, result ) => {
@@ -91,7 +91,7 @@ class UserController {
                 const token = jwt.sign ( {
                     result
                 }, 'qwertyuiopasdfghjklzxcvbnm123456' );
-            //console.log( token );
+            // console.log( token );
             res.send({
                 data: token,
                 message: 'Login Permited',
