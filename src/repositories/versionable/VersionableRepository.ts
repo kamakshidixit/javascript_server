@@ -1,8 +1,8 @@
 import * as mongoose from 'mongoose';
-import { DocumentQuery , Query } from 'mongoose';
 
 export default class VersionableRepository<D extends mongoose.Document, M extends mongoose.Model<D>> {
     private model: M;
+
     constructor(model) {
         this.model = model;
     }
@@ -11,36 +11,81 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
         return String(mongoose.Types.ObjectId());
     }
 
-    public count() {
-        return this.model.countDocuments();
-    }
-    public findOne(query) {
-        return this.model.findOne(query).lean();
+    public async count() {
+        return await this.model.countDocuments();
     }
 
-    public getUser(data: any) {
-        return this.model.findOne(data);
+    public async findOne(query: object) {
+        return await this.model.findOne(query).lean();
     }
 
-    public create(data: any): Promise<D> {
+    public async create(data: any, creator): Promise<D> {
         const id = VersionableRepository.generateObjectId();
-        const model = new this.model({
+
+        const modelData = {
             ...data,
+            originalId: id,
+            createdBy: creator,
             _id: id,
-            originalId: id
-        });
-        return  model.save();
+        };
+
+        return await this.model.create(modelData);
     }
 
-   public delete(id: any) {
-       return new Promise((resolve, reject) => {
-           let originalData;
+    public async getUser(data: any) {
+        return await this.model.findOne(data);
+    }
 
-           this.findOne({ _id: id, deletedAt: undefined}).lean()
-           .then((data) => {
-                console.log('data: ', data);
+    public async update(id: string, dataToUpdate: any, updator) {
+
+        let originalData;
+        // console.log()
+        // tslint:disable-next-line: no-null-keyword
+        await this.findOne({ _id: id, updatedAt: null, deletedAt: null })
+            .then((data) => {
                 if (data === null) {
-                    throw Error;
+                    throw new Error('');
+                }
+                originalData = data;
+                const newId = VersionableRepository.generateObjectId();
+                const oldId = originalData._id;
+                const oldModel = {
+                    ...originalData,
+                    updatedAt: Date.now(),
+                    updatedBy: updator,
+                    deletedAt: Date.now(),
+                    deletedBy: updator,
+                };
+
+                const newData = Object.assign(JSON.parse(JSON.stringify(originalData)), dataToUpdate);
+
+                newData._id = newId;
+                newData.createdAt = Date.now();
+
+                this.model.updateOne({ _id: oldId }, oldModel)
+                    .then((res) => {
+                        if (res === null) {
+                            throw new Error('');
+                        }
+                        else
+                            return res;
+                    });
+
+                this.model.create(newData);
+
+
+            });
+    }
+
+    public async delete(id: string, remover: string) {
+
+        let originalData;
+
+        // tslint:disable-next-line: no-null-keyword
+        await this.findOne({ _id: id, deletedAt: null })
+            .then((data) => {
+                if (data === null) {
+                    throw new Error('');
                 }
 
                 originalData = data;
@@ -48,15 +93,16 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
 
                 const modelDelete = {
                     ...originalData,
-                    deletedAt: Date.now()
+                    deletedAt: Date.now(),
+                    deletedBy: remover,
                 };
 
-                this.model.updateOne({ _id: oldId}, modelDelete);
-                resolve(undefined);
-           })
-           .catch((err) => {
-                reject(err);
-           });
-       });
-   }
-  }
+                this.model.updateOne({ _id: oldId }, modelDelete)
+                    .then((res) => {
+                        if (res === null) {
+                            throw new Error('');
+                        }
+                      });
+                   });
+    }
+}
