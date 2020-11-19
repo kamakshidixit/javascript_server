@@ -4,8 +4,37 @@ import { userModel } from '../../repositories/user/UserModel';
 import UserRepository from '../../repositories/user/UserRepository';
 import { config } from '../../config';
 import IRequest from '../../IRequest';
+import * as bcrypt from 'bcrypt';
 
 class UserController {
+  public async get(req: Request, res: Response, next: NextFunction) {
+
+    const user = new UserRepository();
+    const { id } = req.query;
+
+    await user.getUser({ id })
+        .then((data) => {
+            if (data === null) {
+                throw undefined;
+            }
+
+            res.status(200).send({
+                message: 'User Fetched successfully',
+
+                data,
+
+                code: 200
+            });
+
+        })
+        .catch(err => {
+            console.log(err);
+            res.send({
+                error: 'User not found',
+                code: 500
+            });
+        });
+      }
 
     public async me(req: IRequest, res: Response, next: NextFunction) {
         const id = req.query;
@@ -108,7 +137,9 @@ class UserController {
                     return;
                 }
 
-                const token = jwt.sign(userData.toJSON(), config.KEY);
+                const token = jwt.sign(userData.toJSON(), config.KEY, {
+                  expiresIn: Math.floor(Date.now() / 1000) + ( 15 * 60),
+                  });
                 res.send({
                     message: 'Login Successfull',
                     status: 200,
