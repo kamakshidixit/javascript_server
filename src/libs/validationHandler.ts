@@ -18,57 +18,62 @@ export default ( config ) => ( req: Request, res: Response, next: NextFunction  
         console.log('body is', req[obj.in]);
         console.log('body', Object.keys( req[obj.in] ).length );
         if (Object.keys( req[obj.in] ).length === 0) {
-            errors.push({
-                message: `Values should be passed through ${obj.in}`,
-                status: 400
+          errors.push({
+              key: {key},
+              location: obj.in,
+              message: obj.errorMessage || `Values should be passed through ${obj.in}`,
             });
         }
 
         // Checking for required
         console.log('values is' , values);
         if (obj.required) {
-            if (isNull(values[0])) {
-                errors.push({
-                    message: `${key} is required`,
-                    status: 404
+          if (isNull(values[0])) {
+              errors.push({
+                  key: {key},
+                  location: obj.in,
+                  message: obj.errorMessage || `${key} is required`,
                 });
             }
         }
+        // Checking for string
         if (obj.string) {
             if ( !( typeof ( values[0] ) === 'string' ) ) {
                 errors.push({
-                    message: `${key} Should be a String`,
-                    status: 404
+                  key: {key},
+                  location: obj.in,
+                  message: obj.errorMessage || `${key} Should be a String`,
                 });
             }
         }
+        // Checking for Object
         if (obj.isObject) {
             if ( ! ( typeof ( values ) === 'object' ) ) {
                 errors.push({
-                    message: `${key} Should be an object`,
-                    status: 404
+                  key: {key},
+                  location: obj.in,
+                  message: obj.errorMessage || `${key} Should be an object`,
                 });
             }
         }
+        // Checking For Regex
         if (obj.regex) {
             const regex = obj.regex;
             if (!regex.test(values[0])) {
                 errors.push({
-                    message: `${key} is not valid expression` ,
-                    status: 400,
+                  key: {key},
+                  location: obj.in,
+                  message: obj.errorMessage || `${key} is not valid expression` ,
                 });
             }
         }
-        // if (obj.default) {
-        //     if ( values[0] === '' ) {
-        //        values[0] === obj.default;
-        //     }
-        // }
+        // Checking for number
         if (obj.number) {
             if (isNaN(values[0]) || values[0] === undefined) {
                 errors.push({
-                    message: `${key}  must be an number` ,
-                    status: 400,
+                  key: {key},
+                  location: obj.in,
+                  message: obj.errorMessage || `${key}  must be an number` ,
                 });
             }
         }

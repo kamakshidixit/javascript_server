@@ -30,10 +30,10 @@ class Server {
 
     public initBodyParser() {
       this.app.use(bodyparser.json());
-      this.app.use(bodyparser.urlencoded({ extended: false }))
+      this.app.use(bodyparser.urlencoded({ extended: false }));
     }
     run() {
-        const {app, config: {PORT}} = this;
+        const { app, config: { PORT } } = this;
         Database.open('mongodb://localhost:27017/express-training')
         .then((res) => {
           console.log('successfully connected to mongo');
@@ -41,9 +41,9 @@ class Server {
             if (err) {
                 console.log(err);
             }
-            else{
+            else {
             console.log(`App is running on port ${PORT}`);
-            //Database.disconnect();
+            // Database.disconnect();
             }
            });
       })
