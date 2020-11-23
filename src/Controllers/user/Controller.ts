@@ -97,7 +97,7 @@ class UserController {
             }
             const matchPassword = await bcrypt.compareSync(payload.password, data.password);
             if (matchPassword) {
-                const token = jwt.sign(payload, secretKey);
+                const token = jwt.sign(payload, secretKey, { expiresIn: '15m' });
                 return res.status(200).send({
                     message: 'token created successfully',
                     data: {

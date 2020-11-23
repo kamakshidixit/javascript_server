@@ -4,34 +4,48 @@ import { Response , NextFunction } from 'express';
 import { hasPermission } from '../permissions';
 import configuration from '../../config/configuration';
 import { config } from 'dotenv/types';
+import UserRepository from '../../repositories/user/UserRepository';
 console.log('Json Web tokens', jwt);
 
 export default ( module: any , permissionType: string ) => async ( req: IRequest, res: Response, next: NextFunction ) => {
   const secretKey = configuration.SECRET;
+  const head = 'authorization';
 
-  try {
-  console.log( 'Inside ValidationHandler Middleware' );
-  console.log( 'config is', module, permissionType );
-  const token = req.headers.authorization;
-  console.log( token );
-  const User = jwt.verify( token, configuration.SECRET );
-  console.log( 'user', User.result );
-  req.userData = User.result;
-  console.log( User.result.role );
-  const result = hasPermission ( module , User.result.role , permissionType );
-  console.log( 'result is', result );
-  if ( result === true )
-      next();
-  else {
-      next ( {
-          message: 'Unauthorised',
-          status: 403
-      } );
-  }
-  }
-  catch ( err ) {
-      next ( {
-          message: err
-      } );
-  }
+  const token = req.headers[head];
+    let dbUser;
+    if (!token) {
+        return next({
+            message: 'Token not found',
+            error: 'Authentication failed',
+            status: 403
+        });
+    }
+    try {
+        const userData = jwt.verify(token, secretKey);
+        console.log('user: ', userData);
+        dbUser =  await UserRepository.findOne({email: userData.email});
+        if (!dbUser) {
+            return next({
+                error: 'Unauthorized',
+                message: 'permission Denied',
+                status: 403
+            });
+        }
+        req.user = dbUser;
+        if (!hasPermission(module, dbUser.role, permissionType)) {
+            next({
+                message: 'Permission denied',
+                error: 'Unauthorized Access',
+                status: 403
+            });
+        }
+        next();
+    } catch (err) {
+        next({
+            message: 'User is unauthorized',
+            error: 'Unauthorized Access',
+            status: 403
+        });
+    }
+
 };
