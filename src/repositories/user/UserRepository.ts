@@ -1,37 +1,33 @@
 import * as mongoose from 'mongoose';
 import { userModel } from './UserModel';
 import IUserModel from './IUserModel';
-import { Options } from 'body-parser';
-
 import VersionableRepository from '../versionable/VersionableRepository';
-
 export default class UserRepository extends VersionableRepository<IUserModel, mongoose.Model<IUserModel>> {
-
-    constructor() {
-        super(userModel);
-    }
-
-    public createUser(data, creator) {
-        return super.create(data, creator);
-    }
-
-    public updateUser(id, data, updator) {
-        return super.update(id, data, updator);
-    }
-
-    public getUser(data) {
-        return super.getUser(data);
-    }
-
-    public deleteData(id, remover) {
-        return super.delete(id, remover);
-    }
-
-    public findone(data) {
-        return super.findOne(data);
-    }
-
-    public countData() {
-        return super.count();
-    }
+static delete(body: any) {
+  throw new Error('Method not implemented.');
+}
+public static generateObjectId() {
+return String(mongoose.Types.ObjectId());
+}
+constructor() {
+super(userModel);
+}
+public static findOne(query): mongoose.DocumentQuery<IUserModel, IUserModel, {}> {
+return userModel.findOne(query).lean();
+}
+public create(data: any): Promise<IUserModel> {
+return super.create(data);
+}
+public delete(id: string): Promise<IUserModel> {
+return super.delete(id);
+}
+public update(data: any): Promise<IUserModel> {
+return super.update(data);
+}
+public async get(query: any, projection: any, options: any): Promise<IUserModel[]> {
+return super.get(query, projection, options);
+}
+public count(query: any) {
+return super.count(query);
+}
 }

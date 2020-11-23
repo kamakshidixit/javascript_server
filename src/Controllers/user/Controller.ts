@@ -1,128 +1,110 @@
 import * as jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import { userModel } from '../../repositories/user/UserModel';
+import configuration from '../../config/configuration';
+import { payload } from '../../libs/routes/constant';
 import UserRepository from '../../repositories/user/UserRepository';
-import { config } from '../../config';
-import IRequest from '../../IRequest';
-
 class UserController {
-
-    public async me(req: IRequest, res: Response, next: NextFunction) {
-        const id = req.query;
-        const user = new UserRepository();
-
-        await user.getUser({ id })
-            .then((data) => {
-                res.status(200).send({
-                    message: 'User Fetched successfully',
-                    'data': { data },
-                    code: 200
-                });
-            });
+  static instance: UserController;
+  static getInstance() {
+    if (UserController.instance) {
+      return UserController.instance;
     }
-
-    public async create(req: IRequest, res: Response, next: NextFunction) {
-        const { id, email, name, role, password } = req.body;
-        const creator = req.userData._id;
-
-        const user = new UserRepository();
-        await user.createUser({ email, name, role, password }, creator)
-            .then(() => {
-                console.log(req.body);
-                res.send({
-                    message: 'User Created Successfully!',
-                    data: {
-                        'name': name,
-                        'email': email,
-                        'role': role,
-                        'password': password
-                    },
-                    code: 200
-                });
-            });
+    UserController.instance = new UserController();
+    return UserController.instance;
+  }
+  private userRepository: UserRepository;
+  constructor() {
+    this.userRepository = new UserRepository();
+  }
+  public get = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const extractedData = await this.userRepository.get(req.body, {}, {});
+      console.log(extractedData);
+      res.status(200).send({
+        message: 'User fetched successfully',
+        data: [extractedData],
+        status: 'success',
+      });
+    } catch (err) {
+      console.log('error is ', err);
     }
-
-    public async update(req: IRequest, res: Response, next: NextFunction) {
-        const { id, dataToUpdate } = req.body;
-        console.log('id', id);
-        console.log('dataToUpdate', dataToUpdate);
-        const updator = req.userData._id;
-        const user = new UserRepository();
-        await user.updateUser( id, dataToUpdate, updator)
-        .then((result) => {
-            res.send({
-                data: result,
-                message: 'User Updated',
-                code: 200
+  }
+  public create = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await this.userRepository.create(req.body);
+      console.log(result);
+      res.status(200).send({
+        message: 'User created successfully',
+        data: result,
+        status: 'success',
+      });
+    } catch (err) {
+      console.log('error is ', err);
+    }
+  }
+  public update = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await this.userRepository.update(req.body);
+      console.log(result);
+      res.status(200).send({
+        message: 'User updated successfully',
+        data: result
+      });
+    } catch (err) {
+      console.log('error is ', err);
+    }
+  }
+  public delete = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await this.userRepository.delete(req.params.id);
+      // await this.userRepository.delete(req.params.id);
+      res.status(200).send({
+        message: 'User deleted successfully',
+        data:
+        {
+        },
+        status: 'success',
+      });
+    } catch (err) {
+      console.log('error is ', err);
+    }
+  }
+  login(req: Request, res: Response, next: NextFunction) {
+    try {
+      const secretKey = configuration.secret;
+      payload.email = req.body.email;
+      payload.password = req.body.password;
+      UserRepository.findOne({ email: req.body.email, passsword: req.body.passsword })
+        .then((data) => {
+          if (data === null) {
+            next({
+              message: 'user not found',
+              error: 'Unauthorized Access',
+              status: 403
             });
+          }
+          else {
+            const token = jwt.sign(payload, secretKey);
+            res.status(200).send({
+              message: 'token created successfully',
+              data: {
+                generated_token: token
+              },
+              status: 'success'
+            });
+          }
         })
-        .catch ((err) => {
-            res.send({
-                error: 'User Not Found for update',
-                code: 404
-            });
+        .catch((err) => {
+          console.log('data not found', err);
         });
     }
-
-    public async remove(req: IRequest, res: Response, next: NextFunction) {
-        const  id  = req.params.id;
-        const remover = req.userData._id;
-        const user = new UserRepository();
-        await user.deleteData(id, remover)
-        .then((result) => {
-            res.send({
-                message: 'Deleted successfully',
-                code: 200
-            });
-        })
-        .catch ((err) => {
-            res.send({
-                message: 'User not found to be deleted',
-                code: 404
-            });
-        });
+    catch (err) {
+      return next({
+        error: 'bad request',
+        message: err,
+        status: 400
+      });
     }
-
-    public async login(req: IRequest, res: Response, next: NextFunction) {
-        const { email } = req.body;
-
-        const user = new UserRepository();
-
-        await user.getUser({ email })
-            .then((userData) => {
-                if (userData === null) {
-                    res.status(404).send({
-                        err: 'User Not Found',
-                        code: 404
-                    });
-                    return;
-                }
-
-                const { password } = userData;
-
-                if (password !== req.body.password) {
-                    res.status(401).send({
-                        err: 'Invalid Password',
-                        code: 401
-                    });
-                    return;
-                }
-
-                const token = jwt.sign(userData.toJSON(), config.KEY);
-                res.send({
-                    message: 'Login Successfull',
-                    status: 200,
-                    'token': token
-                });
-                return;
-
-            });
-    }
-
+  }
 }
-
-export default new UserController();
-
-
-
-
+export default UserController.getInstance();

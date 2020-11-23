@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+
 export default class VersionableSchema extends mongoose.Schema {
   constructor(options: any, collection: any) {
     const versionable = Object.assign({
@@ -8,6 +9,8 @@ export default class VersionableSchema extends mongoose.Schema {
         type: Date,
       },
       deletedAt: {
+        required: false,
+        default: undefined,
         type: Date,
       },
       originalId: {
@@ -15,18 +18,22 @@ export default class VersionableSchema extends mongoose.Schema {
         type: String,
       },
       updatedAt: {
+        default: undefined,
         required: false,
-        type: String,
+        type: Date,
       },
       updatedBy: {
+        default: undefined,
         required: false,
         type: String,
       },
       deletedBy: {
+        default: undefined,
         required: false,
         type: String,
       },
       createdBy: {
+        default: undefined,
         required: false,
         type: String,
       },
