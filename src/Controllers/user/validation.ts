@@ -61,12 +61,14 @@ const config = {
     email: {
         required: true,
         string: true,
-        in: ['body']
+        in: ['body'],
+        errorMessage: 'Email is invalid',
     },
     password: {
         required: true,
         string: true,
-        in: ['body']
+        in: ['body'],
+        errorMessage: 'Password is invalid'
     }
   }
 

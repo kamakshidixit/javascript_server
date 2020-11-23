@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import seedData from './seedData';
+import { seed } from './seedData';
 
 class Database {
   static open(mongoURL) {
@@ -11,14 +11,14 @@ class Database {
         reject(err);
         return;
       }
-      seedData();
+      seed();
       // tslint:disable-next-line: no-null-keyword
       resolve(null);
     });
 
   });
 }
- // static disconnect() {
+ // public static disconnect() {
    // console.log('Disconnected');
     // mongoose.connection.close();
 

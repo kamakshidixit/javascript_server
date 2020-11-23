@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as bodyparser from 'body-parser';
+import { IConfig } from './config/IConfig';
 import { notFoundHandler, errorHandler } from './libs/routes';
 import routes from  './router';
 import Database from './libs/Database';

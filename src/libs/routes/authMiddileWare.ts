@@ -6,14 +6,15 @@ import configuration from '../../config/configuration';
 import { config } from 'dotenv/types';
 console.log('Json Web tokens', jwt);
 
-export default ( module: any , permissionType: string ) => ( req: IRequest, res: Response, next: NextFunction ) => {
+export default ( module: any , permissionType: string ) => async ( req: IRequest, res: Response, next: NextFunction ) => {
+  const secretKey = configuration.SECRET;
 
   try {
   console.log( 'Inside ValidationHandler Middleware' );
   console.log( 'config is', module, permissionType );
   const token = req.headers.authorization;
   console.log( token );
-  const User = jwt.verify( token, configuration.KEY );
+  const User = jwt.verify( token, configuration.SECRET );
   console.log( 'user', User.result );
   req.userData = User.result;
   console.log( User.result.role );
