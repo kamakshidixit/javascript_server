@@ -1,51 +1,34 @@
+import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
-import IRequest from '../../IRequest';
-import { Response , NextFunction } from 'express';
 import { hasPermission } from '../permissions';
+import IRequest from '../../IRequest';
 import configuration from '../../config/configuration';
-import { config } from 'dotenv/types';
-import UserRepository from '../../repositories/user/UserRepository';
-console.log('Json Web tokens', jwt);
 
-export default ( module: any , permissionType: string ) => async ( req: IRequest, res: Response, next: NextFunction ) => {
-  const secretKey = configuration.SECRET;
-  const head = 'authorization';
-
-  const token = req.headers[head];
-    let dbUser;
-    if (!token) {
-        return next({
-            message: 'Token not found',
-            error: 'Authentication failed',
-            status: 403
-        });
-    }
+export const authMiddleWare = ( module, permissionType ) => (req: IRequest, res: Response, next: NextFunction ) => {
     try {
-        const userData = jwt.verify(token, secretKey);
-        console.log('user: ', userData);
-        dbUser =  await UserRepository.findOne({email: userData.email});
-        if (!dbUser) {
-            return next({
-                error: 'Unauthorized',
-                message: 'permission Denied',
-                status: 403
-            });
-        }
-        req.user = dbUser;
-        if (!hasPermission(module, dbUser.role, permissionType)) {
-            next({
-                message: 'Permission denied',
-                error: 'Unauthorized Access',
-                status: 403
-            });
-        }
-        next();
-    } catch (err) {
-        next({
-            message: 'User is unauthorized',
-            error: 'Unauthorized Access',
-            status: 403
-        });
-    }
 
+    console.log( 'the config is ' , module, permissionType );
+    console.log( 'Header is ' , req.headers.authorization);
+    const token = req.headers.authorization;
+    const decodedUser =  jwt.verify(token, configuration.SECRET);
+    console.log( 'User', decodedUser );
+    req.userData = decodedUser;
+    const irole = decodedUser.role;
+    console.log('Role is ', irole);
+    if ( irole ) {
+        if ( hasPermission( module, irole, permissionType )) {
+            console.log('true');
+            next();
+        }
+        else {
+            next( { error: 'Permission does not exist' } );
+        }
+    }
+    else {
+        next( { error: 'Role does not exist in token' } );
+        }
+ }
+ catch ( err ) {
+     next( { error: 'authentication failed' } );
+ }
 };

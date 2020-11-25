@@ -57,21 +57,19 @@ const config = {
     }
   }
 },
-  login: {
-    email: {
-        required: true,
-        string: true,
-        in: ['body'],
-        errorMessage: 'Email is invalid',
-    },
-    password: {
-        required: true,
-        string: true,
-        in: ['body'],
-        errorMessage: 'Password is invalid'
-    }
+login: {
+  email: {
+      required: true,
+      string: true,
+      in: ['body'],
+  },
+      password: {
+          required: true,
+          string: true,
+          in: ['body'],
+      }
   }
-
 };
+
 
   export default config;

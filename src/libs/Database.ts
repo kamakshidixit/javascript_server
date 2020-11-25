@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { seed } from './seedData';
+import seed  from './seedData';
 
 class Database {
   static open(mongoURL) {

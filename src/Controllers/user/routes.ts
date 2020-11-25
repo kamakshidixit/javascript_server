@@ -7,12 +7,17 @@ import { authMiddleWare } from '../../libs/routes';
 import config from './validation';
 
 const userRouter = Router();
-userRouter.route('/');
+userRouter.get('/get', authMiddleWare('getUsers', 'read'), validationHandler(validation.get),
+    userController.get);
 
-userRouter.route('/me')
-.get(authMiddleWare ('getUsers', 'all'), userController.get);
+userRouter.post('/create', authMiddleWare('getUsers', 'read'), validationHandler(validation.create),
+    userController.create);
+userRouter.put('/update', authMiddleWare('getUsers', 'read'), validationHandler(validation.update),
+    userController.update);
+userRouter.delete('/:id', authMiddleWare('getUser1', 'Delete'), validationHandler(validation.Delete),
+    userController.delete);
+userRouter.post('/login', validationHandler(validation.login), userController.login);
+userRouter.get('/me', authMiddleWare('getUsers', 'read'), userController.me);
 
-userRouter.route('/login')
-.post( validationHandler ( config.login ) , userController.login );
 
 export default userRouter;

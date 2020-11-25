@@ -1,53 +1,59 @@
 import { NextFunction, Request, Response } from 'express';
 export const validationHandler = ( config ) => ( req: Request, res: Response, next: NextFunction  ) => {
-    const errors = [];
-    Object.keys(config).forEach((key) => {
-        const i = 0;
-        const keys = config[key];
-        const locations = keys.in[i];
-        let request = req[locations][key];
-        const regex = keys.regex;
-        if ((keys.required) && !(request)) {
-            const err = {
-                key: `${key}`,
-                location: `${keys.in}`,
-                errorMessage: `${keys.errorMessage || 'required'}`
+    const error = [];
+    Object.keys(config).forEach((keys) => {
+        const inObject = config[keys];
+        inObject.in.forEach(inside => {
+            let value = req[inside][keys];
+            const a = {
+                key : '',
+                location: '',
+                errorMessage: ''
             };
-            errors.push(err);
-        }
-        if ((!keys.required) && !(request)) {
-            return request = keys.default;
-        }
-        if (
-            (((keys.number) && !(Number.isInteger(Number(request)))) ||
-                ((keys.string) && !(typeof request === 'string')))
-        ) {
-            const err = {
-                key: `${key}`,
-                location: `${keys.in}`,
-                errorMessage: `${keys.errorMessage || 'incorrect Type'}`
-            };
-            errors.push(err);
-        }
-        if ((keys.isObject) && !(typeof (request) === 'object')) {
-            const err = {
-                key: `${key}`,
-                location: `${keys.in}`,
-                errorMessage: `${keys.errorMessage || 'not an Object'}`
-            };
-            errors.push(err);
-        }
-        if ((regex) && (!regex.test(request))) {
-            const err = {
-                key: `${key}`,
-                location: `${keys.in}`,
-                errorMessage: `${request} is not valid`
-            };
-            errors.push(err);
-        }
+            if ((inObject.required) && !(value)) {
+                a.key = keys;
+                a.location = inside;
+                a.errorMessage = inObject.errorMessage || `${keys} is required`;
+                error.push(a);
+                return;
+            }
+            value = value || inObject.default;
+            if (!value) {
+                return;
+            }
+            if ((inObject.number) && !(Number.isInteger(Number(value)))) {
+                a.key = keys;
+                a.location = inside;
+                a.errorMessage = inObject.errorMessage || `${keys}'s type is not number`;
+                error.push(a);
+                return;
+            }
+            if ((inObject.string) && !(typeof value === 'string')) {
+                a.key = keys;
+                a.location = inside;
+                a.errorMessage = inObject.errorMessage || `${keys}'s type is not string`;
+                error.push(a);
+                return;
+            }
+            const regex = inObject.regex;
+            if ((regex) && !regex.test(value)) {
+                a.key = keys;
+                a.location = inside;
+                a.errorMessage = inObject.errorMessage || `${keys} is invalid`;
+                error.push(a);
+                return;
+            }
+            if (inObject.isObject && (!(typeof value === 'object') || !(Object.entries(value).length))) {
+                a.key = keys;
+                a.location = inside;
+                a.errorMessage = `${keys} is invalid`;
+                error.push(a);
+                return;
+            }
+        });
     });
-    if (errors.length !== 0) {
-        return res.status(400).send(errors);
+    if (error.length) {
+        return res.status(400).send(error);
     }
-    next();
-};
+    next ();
+  };
