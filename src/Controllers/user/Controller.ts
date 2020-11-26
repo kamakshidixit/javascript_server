@@ -152,4 +152,6 @@ public async me(req: IRequest, res: Response, next: NextFunction) {
 
 }
 
-export default new UserController();
+
+export default UserController.getInstance();
+
