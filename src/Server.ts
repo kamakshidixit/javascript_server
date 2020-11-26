@@ -5,6 +5,7 @@ import { notFoundHandler, errorHandler } from './libs/routes';
 import routes from  './router';
 import Database from './libs/Database';
 import { disconnect } from 'process';
+import notFoundRoute from './libs/routes/notFoundRoute';
 
 class Server {
 
@@ -18,13 +19,15 @@ class Server {
         return this;
     }
     SetupRoutes() {
-        this.app.use('/health-check', (req, res, next) => {
+    const { app } = this;
+
+        this.app.use('/health-check', (req: Request, res: express.Response, next: express.NextFunction) => {
             res.send('i am ok');
         });
 
         this.app.use('/api', routes);
 
-        this.app.use(notFoundHandler);
+        this.app.use(notFoundRoute);
 
         this.app.use(errorHandler);
     }

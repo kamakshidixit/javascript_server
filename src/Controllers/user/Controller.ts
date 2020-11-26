@@ -6,35 +6,28 @@ import configuration from '../../config/configuration';
 import IRequest from '../../IRequest';
 
 class UserController {
-  public async get(req: Request, res: Response, next: NextFunction) {
+ public async get(req: IRequest, res: Response, next: NextFunction) {
+    try {
+        console.log('Inside get method of User Controller');
 
-    const user = new UserRepository();
-    const { id } = req.query;
-
-    await user.getUser({ id })
-        .then((data) => {
-            if (data === null) {
-                throw undefined;
-            }
-
-            res.status(200).send({
-                message: 'User Fetched successfully',
-
-                data,
-
-                code: 200
-            });
-
-        })
-        .catch(err => {
-            console.log(err);
-            res.send({
-                error: 'User not found',
-                code: 500
-            });
+        const userRepository = new UserRepository();
+        const sort = {};
+        sort[`${req.query.sortedBy}`] = req.query.sortedOrder;
+        console.log(sort);
+        const extractedData = await userRepository.getAll(req.body).sort(sort).skip(Number(req.query.skip)).limit(Number(req.query.limit));
+        res.status(200).send({
+            message: 'trainee fetched successfully',
+            totalCount: await userRepository.count(req.body),
+            count: extractedData.length,
+            data: [extractedData],
+            status: 'success',
         });
-
+    }
+    catch (err) {
+        console.log('Inside err', err);
+    }
 }
+
 
 public async me(req: IRequest, res: Response, next: NextFunction) {
     const id = req.query;

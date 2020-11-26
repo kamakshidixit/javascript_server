@@ -5,6 +5,8 @@ import { validationHandler } from '../../libs/validationHandler';
 import validation from './validation';
 import { authMiddleWare } from '../../libs/routes';
 import config from './validation';
+import { permissions, users } from '../../libs/routes/constant';
+
 
 const userRouter = Router();
 userRouter.get('/get', authMiddleWare('getUsers', 'read'), validationHandler(validation.get),
