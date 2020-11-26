@@ -47,3 +47,5 @@ export default class UserRepository extends VersionableRepository<IUserModel, mo
       return super.count();
   }
 }
+
+  
