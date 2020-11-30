@@ -9,9 +9,9 @@ const swaggerOptions = {
             version: '1.0.0',
             title: 'first express app',
             properties: {
-                email: 'sweta.sharma@successive.tech'
+                email: 'kamakshidixit@successive.tech'
             },
-            server: ['https://localhost:9001/']
+            server: ['https://localhost:9000/']
         },
         securityDefinitions: {
             Bearer: {
