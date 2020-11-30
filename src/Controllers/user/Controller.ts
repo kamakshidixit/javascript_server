@@ -117,7 +117,7 @@ class UserController {
   }
   async login(req: IRequest, res: Response, next: NextFunction) {
     try {
-      const secretKey = configuration.secret;
+      const secretKey = configuration.SECRET;
       const { email, password } = req.body;
       payload.password = password;
       payload.email = email;

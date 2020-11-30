@@ -5,7 +5,7 @@ const userRepository: UserRepository = new UserRepository();
 export async function seed() {
     const res = await userRepository.count();
     if (res === 0) {
-        const hashedPassword = bcrypt.hashSync(configuration.password, 10);
+        const hashedPassword = bcrypt.hashSync(configuration.PASSWORD, 10);
             console.log('data seeding in progress');
             userRepository.create({
                 name: 'Head Trainer',

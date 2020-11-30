@@ -4,7 +4,7 @@ import configuration from '../../config/configuration';
 import UserRepository from '../../repositories/user/UserRepository';
 
 export default (module, permissionType) =>  async (req, res, next) => {
-    const secretKey = configuration.secret;
+    const secretKey = configuration.SECRET;
     const head = 'authorization';
     const token = req.headers[head];
     let dbUser;
