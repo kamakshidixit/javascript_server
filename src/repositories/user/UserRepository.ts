@@ -1,38 +1,49 @@
 import * as mongoose from 'mongoose';
-import { userModel } from './UserModel';
 import IUserModel from './IUserModel';
-import VersionableRepository from '../versionable/VersionableRepository';
+import { userModel } from './UserModel';
 import * as bcrypt from 'bcrypt';
+import VersionableRepository from '../versionable/VersionableRepository';
 
 export default class UserRepository extends VersionableRepository<IUserModel, mongoose.Model<IUserModel>> {
 
-    public static generateObjectId() {
-        return String(mongoose.Types.ObjectId());
-    }
     constructor() {
         super(userModel);
     }
-    public static findOne(query): mongoose.DocumentQuery<IUserModel, IUserModel, {}> {
-        const finalQuery = { deletedAt: undefined, ...query };
-        return userModel.findOne(finalQuery).lean();
+
+    public createUser(data, creator) {
+        const rawPassword = data.password;
+        console.log('rawPassword' , rawPassword);
+         const saltRounds = 10;
+         const salt = bcrypt.genSaltSync(saltRounds);
+         const hashedPassword = bcrypt.hashSync(rawPassword, salt);
+         data.password = hashedPassword;
+         console.log('data pass: ', data.password);
+         return super.createUser(data, creator);
+    }
+     public updateUser(id, data, updator) {
+       if ('password' in data) {
+         const rawPassword = data.password;
+         const saltRounds = 10;
+         const salt = bcrypt.genSaltSync(saltRounds);
+         const hashedPassword = bcrypt.hashSync(rawPassword, salt);
+         data.password = hashedPassword;
+     }
+         return super.update(id, data, updator);
+     }
+
+    public getUser(data) {
+        return super.getUser(data);
     }
 
-    public create(data: any): Promise<IUserModel> {
+    public deleteData(id, remover) {
+        return super.delete(id, remover);
+    }
 
-        return super.create(data);
+    public findone(data) {
+        return super.findOne(data);
     }
-    public delete(id: string): Promise<IUserModel> {
-        return super.delete(id);
-    }
-    public update(data: any): Promise<IUserModel> {
-        return super.update(data);
-    }
-    public async get(query: any, projection: any, options: any): Promise<IUserModel[]> {
-        return super.get(query, projection, options);
 
-    }
-    public count() {
+    public countData() {
         return userModel.countDocuments();
     }
-
 }

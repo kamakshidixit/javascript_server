@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { seed } from './seedData';
+import seedData from './seedData';
 
 class Database {
   static open(mongoURL) {
@@ -11,7 +11,7 @@ class Database {
           reject(err);
           return;
         }
-        seed();
+        seedData();
         // tslint:disable-next-line: no-null-keyword
         resolve(null);
       });

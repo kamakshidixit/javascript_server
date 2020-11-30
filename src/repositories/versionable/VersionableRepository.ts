@@ -1,68 +1,118 @@
 import * as mongoose from 'mongoose';
 import { DocumentQuery, Query } from 'mongoose';
-import IUserModel from '../user/IUserModel';
-
+import * as bcrypt from 'bcrypt';
 export default class VersionableRepository<D extends mongoose.Document, M extends mongoose.Model<D>> {
-    public static generateObjectId() {
-        return String(mongoose.Types.ObjectId());
+    createUser(data: any, creator: any) {
+      throw new Error('Method not implemented.');
     }
-
-    public model: M;
-
+    private model: M;
     constructor(model) {
         this.model = model;
     }
-    public async create(data: IUserModel): Promise<D> {
-        const id = VersionableRepository.generateObjectId();
-        const model = new this.model({
-            ...data,
-            _id: id,
-            originalId: id,
-        });
-        return await model.save();
+
+    public static generateObjectId(): string {
+        return String(mongoose.Types.ObjectId());
     }
+
     public count(query: any): Query<number> {
         const finalQuery = { deletedAt: undefined, ...query };
-        return this.model.count(finalQuery);
+        return this.model.countDocuments(finalQuery);
     }
-    public async findOne(query: any): Promise<D> {
-        console.log(this.model);
-        const finalQuery = { deletedAt: undefined, ...query };
-        return await this.model.findOne(finalQuery);
+
+    public findOne(query) {
+        return this.model.findOne(query).lean();
     }
-    public async get(query: any, projection: any, options: any): Promise<D[]> {
-        const finalQuery = { deletedAt: undefined, ...query };
-        return await this.model.find(finalQuery, projection, options);
+
+    public searchUser(query = {}): DocumentQuery<D[], D> {
+        return this.model.find(query);
     }
-    public async invalidateUpdate(id: string): Promise<D> {
-        const query: any = { originalId: id, deletedAt: { $exists: false }, updatedAt: { $exists: false } };
-        const data: any = { deletedAt: Date.now(), updatedAt: Date.now() };
-        return await this.model.updateOne(query, data);
+
+    public getUser(data: any) {
+      return this.model.findOne(data);
     }
-    public async invalidate(id: string): Promise<D> {
-        const query: any = { originalId: id, deletedAt: { $exists: false } };
-        const data: any = { deletedAt: Date.now()};
-        return await this.model.updateOne(query, data);
+
+    public getAll(query: any, projection: any = {}, options: any = {}): DocumentQuery<D[], D> {
+      const finalQuery = { deletedAt: undefined, ...query };
+      return this.model.find(finalQuery, projection, options);
     }
-    public async delete(id: string): Promise<D> {
-        const previous = await this.findOne({ originalId: id, deletedAt: undefined });
-        if (previous) {
-            return await this.invalidate(id);
-        }
+
+    public async create(data: any, creator): Promise<D> {
+        const id = VersionableRepository.generateObjectId();
+
+        const model = {
+          ...data,
+            _id: id,
+            originalId: id,
+            createdBy: creator,
+            createdAt: Date.now(),
+
+
+        };
+        return await this.model.create(model);
+      }
+
+    public async update(id: string, dataToUpdate: any, updator) {
+        let originalData;
+        await this.findOne({ id, updatedAt: undefined, deletedAt: undefined })
+            .then((data) => {
+                if (data === null) {
+                    throw undefined;
+                }
+                originalData = data;
+                const newId = VersionableRepository.generateObjectId();
+                const oldId = originalData._id;
+                const oldModel = {
+                    ...originalData,
+                    updatedAt: Date.now(),
+                    updatedBy: updator,
+                    deletedAt: Date.now(),
+                    deletedBy: updator,
+                };
+
+                const newData = Object.assign(JSON.parse(JSON.stringify(originalData)), dataToUpdate);
+
+                newData._id = newId;
+                newData.createdAt = Date.now();
+
+                this.model.updateOne({ _id: oldId }, oldModel)
+                    .then((res) => {
+                        if (res === null) {
+                            throw undefined;
+                        }
+                    })
+                    .catch((err) => {
+                        console.log('Error: ', err);
+                    });
+
+                this.model.create(newData);
+
+            });
     }
-    public async update(data: any): Promise<D> {
-        const previous = await this.findOne({ originalId: data.originalId, deletedAt: undefined });
-        console.log('previous: ', previous);
-        if (previous) {
-            await this.invalidateUpdate(data.originalId);
-        } else {
-            return undefined;
-        }
-        const newData = Object.assign(JSON.parse(JSON.stringify(previous)), data);
-        newData._id = VersionableRepository.generateObjectId();
-        delete newData.deletedAt;
-        newData.updatedAt = Date.now();
-        const model = new this.model(newData);
-        return await model.save();
+
+    public async delete(id: string, remover: string) {
+        let originalData;
+        await this.findOne({ id, deletedAt: undefined })
+            .then((data) => {
+                if (data === null) {
+                    throw undefined;
+                }
+                originalData = data;
+                const oldId = originalData._id;
+                const modelDelete = {
+                    ...originalData,
+                    deletedAt: Date.now(),
+                    deletedBy: remover,
+                };
+                this.model.updateOne({ _id: oldId }, modelDelete)
+                    .then((res) => {
+                        if (res === null) {
+                            throw undefined;
+                        }
+                    })
+                    .catch((err) => {
+                        console.log('Error: ', err);
+                    });
+            });
     }
+
 }
