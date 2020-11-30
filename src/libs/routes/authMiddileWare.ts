@@ -1,34 +1,45 @@
-import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { hasPermission } from '../permissions';
-import IRequest from '../../IRequest';
 import configuration from '../../config/configuration';
+import UserRepository from '../../repositories/user/UserRepository';
 
-export const authMiddleWare = ( module, permissionType ) => (req: IRequest, res: Response, next: NextFunction ) => {
-    try {
-
-    console.log( 'the config is ' , module, permissionType );
-    console.log( 'Header is ' , req.headers.authorization);
-    const token = req.headers.authorization;
-    const decodedUser =  jwt.verify(token, configuration.SECRET);
-    console.log( 'User', decodedUser );
-    req.userData = decodedUser;
-    const irole = decodedUser.role;
-    console.log('Role is ', irole);
-    if ( irole ) {
-        if ( hasPermission( module, irole, permissionType )) {
-            console.log('true');
-            next();
-        }
-        else {
-            next( { error: 'Permission does not exist' } );
-        }
+export default (module, permissionType) =>  async (req, res, next) => {
+    const secretKey = configuration.secret;
+    const head = 'authorization';
+    const token = req.headers[head];
+    let dbUser;
+    if (!token) {
+        return next({
+            message: 'Token not found',
+            error: 'Authentication failed',
+            status: 403
+        });
     }
-    else {
-        next( { error: 'Role does not exist in token' } );
+    try {
+         const user = jwt.verify(token, secretKey);
+         console.log('user', user);
+        dbUser =  await UserRepository.findOne({email: user.email});
+        if (!dbUser) {
+            return next({
+                error: 'Unauthorized',
+                message: 'permission Denied',
+                status: 403
+            });
         }
- }
- catch ( err ) {
-     next( { error: 'authentication failed' } );
- }
+        req.user = dbUser;
+        if (!hasPermission(module, dbUser.role, permissionType)) {
+            next({
+                message: 'Permission denied',
+                error: 'Unauthorized Access',
+                status: 403
+            });
+        }
+        next();
+    } catch (err) {
+        next({
+            message: 'User is unauthorized',
+            error: 'Unauthorized Access',
+            status: 403
+        });
+    }
 };

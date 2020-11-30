@@ -6,44 +6,33 @@ import * as bcrypt from 'bcrypt';
 
 export default class UserRepository extends VersionableRepository<IUserModel, mongoose.Model<IUserModel>> {
 
-  constructor() {
-      super(userModel);
-  }
+    public static generateObjectId() {
+        return String(mongoose.Types.ObjectId());
+    }
+    constructor() {
+        super(userModel);
+    }
+    public static findOne(query): mongoose.DocumentQuery<IUserModel, IUserModel, {}> {
+        const finalQuery = { deletedAt: undefined, ...query };
+        return userModel.findOne(finalQuery).lean();
+    }
 
-  public create(data, creator) {
-      const rawPassword = data.password;
-      console.log('rawPassword' , rawPassword);
-       const saltRounds = 10;
-       const salt = bcrypt.genSaltSync(saltRounds);
-       const hashedPassword = bcrypt.hashSync(rawPassword, salt);
-       data.password = hashedPassword;
-       console.log('data pass: ', data.password);
-       return super.createUser(data, creator);
-  }
-   public updateUser(id, data, updator) {
-     if ('password' in data) {
-       const rawPassword = data.password;
-       const saltRounds = 10;
-       const salt = bcrypt.genSaltSync(saltRounds);
-       const hashedPassword = bcrypt.hashSync(rawPassword, salt);
-       data.password = hashedPassword;
-   }
-       return super.update(id, data, updator);
-   }
+    public create(data: any): Promise<IUserModel> {
 
-  public getUser(data) {
-      return super.getUser(data);
-  }
+        return super.create(data);
+    }
+    public delete(id: string): Promise<IUserModel> {
+        return super.delete(id);
+    }
+    public update(data: any): Promise<IUserModel> {
+        return super.update(data);
+    }
+    public async get(query: any, projection: any, options: any): Promise<IUserModel[]> {
+        return super.get(query, projection, options);
 
-  public deleteData(id, remover) {
-      return super.delete(id, remover);
-  }
+    }
+    public count() {
+        return userModel.countDocuments();
+    }
 
-  public findone(data) {
-      return super.findOne(data);
-  }
-
-  public countData() {
-      return userModel.countDocuments();
-  }
 }

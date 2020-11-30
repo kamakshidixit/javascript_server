@@ -6,6 +6,8 @@ import routes from  './router';
 import Database from './libs/Database';
 import { disconnect } from 'process';
 import notFoundRoute from './libs/routes/notFoundRoute';
+import * as swaggerUI from 'swagger-ui-express';
+import swaggerOptions from './swagger';
 
 class Server {
 
@@ -26,6 +28,9 @@ class Server {
         });
 
         this.app.use('/api', routes);
+        this.app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerOptions));
+
+
 
         this.app.use(notFoundRoute);
 

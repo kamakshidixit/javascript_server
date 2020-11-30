@@ -1,25 +1,124 @@
-
-import { Router } from 'express';
-import userController from '../../controllers/user/controller';
-import { validationHandler } from '../../libs/validationHandler';
+import {  Router  } from 'express';
+import userController  from '../../controllers/user/controller';
+import {  validationHandler }  from '../../libs/validationHandler';
 import validation from './validation';
 import { authMiddleWare } from '../../libs/routes';
-import config from './validation';
-import { permissions, users } from '../../libs/routes/constant';
-
 
 const userRouter = Router();
-userRouter.get('/get', authMiddleWare('getUsers', 'read'), validationHandler(validation.get),
-    userController.get);
+/**
+ * @swagger
+ *
+ *  definitions:
+ *      me:
+ *        type: object
+ *        properties:
+ *          message:
+ *              type: string
+ *              example: Me
+ *          status:
+ *              type: string
+ *              example: OK
+ *          data:
+ *              iss: Online JWT Builder
+ *              iat: 1605048360
+ *              exp: 1636584360
+ *              name: skldjf
+ *              email: skldjf@successive.tech
+ *              role: trainee
+ *      Login:
+ *        type: object
+ *        properties:
+ *          email:
+ *              type: string
+ *              example: trainee@successive.tech
+ *          password:
+ *              type: string
+ *              example: training@123
+ *      Token:
+ *           type: object
+ *           properties:
+ *               status:
+ *                   example: Ok
+ *               message:
+ *                   example: Success
+ *               data:
+ *                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5laGEuZ29lbEBzdWNjZXNzaXZlLnRlY2giLCJpZCI6IjVlNGEzNmJjNjQ4MjRiMWY4MGI3MzBjZCIsImlhdCI6MTU4MjU0OTIyN30.cFV6YYlfmhJ1yL3GyIIgb-PjMTpDNVICd5KGi1ENpVI
+ */
+  userRouter.route('/');
 
-userRouter.post('/create', authMiddleWare('getUsers', 'read'), validationHandler(validation.create),
-    userController.create);
-userRouter.put('/update', authMiddleWare('getUsers', 'read'), validationHandler(validation.update),
-    userController.update);
-userRouter.delete('/:id', authMiddleWare('getUser1', 'Delete'), validationHandler(validation.Delete),
-    userController.delete);
-userRouter.post('/login', validationHandler(validation.login), userController.login);
-userRouter.get('/me', authMiddleWare('getUsers', 'read'), userController.me);
+/**
+ * @swagger
+ *
+ * /user/me:
+ *   get:
+ *     tags:
+ *       - User
+ *     description: Current user Details.
+ *     security:
+ *       - Bearer: []
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: skip
+ *         description: Number of elements to skip
+ *         in: query
+ *         required: false
+ *         type: number
+ *       - name: limit
+ *         description: number of elements to show
+ *         in: query
+ *         required: false
+ *         type: number
+ *     responses:
+ *       200:
+ *         description: success
+ *         schema:
+ *             $ref: '#/definitions/me'
+ */
+    userRouter.route('/me')
+    .get(authMiddleWare ('getUsers', 'read'), validationHandler(validation.get), userController.me);
+/**
+ * @swagger
+ *
+ * /user/login:
+ *   post:
+ *     tags:
+ *       - User
+ *     description: Login Credentials
+ *     security:
+ *       - Bearer: []
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: User
+ *         description: User email and password
+ *         in: body
+ *         required: true
+ *         type: object
+ *         schema:
+ *             $ref: '#/definitions/Login'
+ *     responses:
+ *       200:
+ *         description: login
+ *         schema:
+ *              $ref: '#/definitions/Token'
+ *       422:
+ *         description: invalid email or password
+ *         schema:
+ *          oneOf:
+ *          properties:
+ *              status:
+ *                  example: "200"
+ *              message:
+ *                  example: Password does not match
+ *              err:
+ *                  example: Password is incorrect
+ */
+
+
+
+    userRouter.route('/login')
+    .post( validationHandler ( validation.login ), userController.login );
 
 
 export default userRouter;
