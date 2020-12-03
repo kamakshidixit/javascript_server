@@ -1,7 +1,10 @@
 import * as mongoose from 'mongoose';
 import { DocumentQuery, Query } from 'mongoose';
-
+import * as bcrypt from 'bcrypt';
 export default class VersionableRepository<D extends mongoose.Document, M extends mongoose.Model<D>> {
+    createUser(data: any, creator: any) {
+      throw new Error('Method not implemented.');
+    }
     private model: M;
     constructor(model) {
         this.model = model;
@@ -11,18 +14,29 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
         return String(mongoose.Types.ObjectId());
     }
 
-    public count() {
-        return this.model.countDocuments();
+    public count(query: any): Query<number> {
+        const finalQuery = { deletedAt: undefined, ...query };
+        return this.model.countDocuments(finalQuery);
     }
+
     public findOne(query) {
         return this.model.findOne(query).lean();
     }
-    protected find(query = {}): DocumentQuery<D[], D> {
+
+    public searchUser(query = {}): DocumentQuery<D[], D> {
         return this.model.find(query);
     }
 
+    public getUser(data: any) {
+      return this.model.findOne(data);
+    }
 
-    public async createUser(data: any, creator): Promise<D> {
+    public getAll(query: any, projection: any = {}, options: any = {}): DocumentQuery<D[], D> {
+      const finalQuery = { deletedAt: undefined, ...query };
+      return this.model.find(finalQuery, projection, options);
+    }
+
+    public async create(data: any, creator): Promise<D> {
         const id = VersionableRepository.generateObjectId();
 
         const model = {
@@ -31,21 +45,12 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
             originalId: id,
             createdBy: creator,
             createdAt: Date.now(),
-
         };
         return await this.model.create(model);
     }
 
-
-
-    public getUser(data: any) {
-        return this.model.findOne(data);
-    }
-
     public async update(id: string, dataToUpdate: any, updator) {
-
         let originalData;
-
         await this.findOne({ id, updatedAt: undefined, deletedAt: undefined })
             .then((data) => {
                 if (data === null) {
@@ -83,24 +88,19 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
     }
 
     public async delete(id: string, remover: string) {
-
         let originalData;
-
         await this.findOne({ id, deletedAt: undefined })
             .then((data) => {
                 if (data === null) {
                     throw undefined;
                 }
-
                 originalData = data;
                 const oldId = originalData._id;
-
                 const modelDelete = {
                     ...originalData,
                     deletedAt: Date.now(),
                     deletedBy: remover,
                 };
-
                 this.model.updateOne({ _id: oldId }, modelDelete)
                     .then((res) => {
                         if (res === null) {
