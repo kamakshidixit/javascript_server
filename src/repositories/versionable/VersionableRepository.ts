@@ -45,11 +45,9 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
             originalId: id,
             createdBy: creator,
             createdAt: Date.now(),
-
-
         };
         return await this.model.create(model);
-      }
+    }
 
     public async update(id: string, dataToUpdate: any, updator) {
         let originalData;

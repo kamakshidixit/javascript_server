@@ -3,7 +3,6 @@ import IUserModel from './IUserModel';
 import { userModel } from './UserModel';
 import * as bcrypt from 'bcrypt';
 import VersionableRepository from '../versionable/VersionableRepository';
-
 export default class UserRepository extends VersionableRepository<IUserModel, mongoose.Model<IUserModel>> {
 
     constructor() {

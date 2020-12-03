@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import seedData from './seedData';
+import seed  from './seedData';
 
 class Database {
   static open(mongoURL) {
@@ -21,8 +21,7 @@ class Database {
   public static disconnect() {
     console.log('Disconnected');
     mongoose.connection.close();
-
-  }
+ }
 }
 export default Database;
 
