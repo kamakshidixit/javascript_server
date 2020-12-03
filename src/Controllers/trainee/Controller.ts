@@ -1,72 +1,94 @@
+import { Request, Response, NextFunction } from 'express';
+
 class TraineeController {
-  static instance: TraineeController;
+    static instance: TraineeController;
 
-  static getInstance() {
-      if (TraineeController.instance) {
-          return TraineeController.instance;
-      }
-      TraineeController.instance = new TraineeController();
-      return TraineeController.instance;
-  }
-  get(req, res, next) {
-      try {
-          res.send({
-              message: 'Trainees fetched successfully',
-              data: [
-                  {
-                      name: 'trainee1',
-                      address: 'Noida'
-                  }
-              ]
-          });
+    static getInstance() {
+        if ( TraineeController.instance ) {
+            return TraineeController.instance;
+        }
 
-      } catch ( err ) {
-          console.log('inside err', err);
+        TraineeController.instance = new TraineeController();
+        return TraineeController.instance;
+    }
 
-      }
-  }
-  create(req, res, next) {
-      try {
-          console.log('inside post method of trainee controller');
+    get ( req: Request, res: Response, next: NextFunction ) {
+        try {
+            console.log('Inside get method of Trainee Controller');
+            res.send({
+                message: 'Trainees fetched successfully',
+                data: [
+                    {
+                    name: 'Trainee1',
+                    address: 'Noida'
+                }
+            ]
 
-          res.send({
-              message: 'Trainees created successfully',
-              data: {
-                  name: 'trainee1',
-                  address: 'noida'
-              }
-          });
-      } catch (err) {
-          console.log('inside err', err);
-      }
-  }
-  update(req, res, next) {
-      try {
-          console.log('inside update method of trainee controller');
-          res.send({
-              message: 'Trainees updated successfully',
-              data: {
-                  name: 'trainee1',
-                  address: 'noida'
-              }
-          });
-      } catch (err) {
-          console.log('inside err', err);
-      }
-  }
-  Delete(req, res, next) {
-      try {
-          console.log('inside delete method');
-          res.send({
-              message: 'trainees deleted successfully',
-              data: {
-                  name: 'trainee1',
-                  address: 'noida'
-              }
-          });
-      } catch (err) {
-          console.log('inside err', err);
-      }
-  }
+            });
+
+        }
+        catch ( err ) {
+            console.log('inside err', err);
+
+        }
+
+    }
+
+    create ( req: Request, res: Response, next: NextFunction ) {
+        try {
+            console.log('Inside post method of Trainee Controller');
+            res.send({
+                message: 'Trainees created successfully',
+                data: {
+                    name: 'Trainee1',
+                    address: 'Noida'
+                }
+             });
+
+        }
+        catch ( err ) {
+            console.log('inside err', err);
+
+        }
+
+    }
+
+
+    update ( req: Request, res: Response, next: NextFunction ) {
+        try {
+            console.log('Inside put method of Trainee Controller');
+            res.send({
+                message: 'Trainees updated successfully',
+                data: {
+                    name: 'Trainee1',
+                    address: 'Noida'
+                }
+             });
+
+        } catch ( err ) {
+            console.log('inside err', err);
+
+        }
+
+    }
+
+    delete ( req: Request, res: Response, next: NextFunction ) {
+        try {
+            console.log('Inside delete method of Trainee Controller');
+            res.send({
+                message: 'Trainees Deleted successfully',
+                data: {
+                    name: 'Trainee1',
+                    address: 'Noida'
+                }
+             });
+
+        } catch ( err ) {
+            console.log('inside err', err);
+
+        }
+
+    }
 }
+
 export default TraineeController.getInstance();

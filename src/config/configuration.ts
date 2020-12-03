@@ -1,8 +1,13 @@
+import { config } from 'dotenv';
+config();
 import { IConfig } from './IConfig';
-// tslint:disable-next-line: no-var-requires
-const envVars = require ('dotenv').config();
-console.log('Inside config', envVars);
-const config = envVars.parsed;
-Object.freeze(config);
-// config.PORT=7000;
-export default config;
+const envVars: NodeJS.ProcessEnv = process.env;
+const configuration: IConfig = Object.freeze({
+    NODE_ENV: process.env.NODE_ENV ,
+    PORT: process.env.PORT,
+    MONGO_URL: process.env.MONGO_URL,
+    SECRET: process.env.SECRET,
+    PASSWORD: process.env.PASSWORD
+});
+console.log('config is', configuration);
+export default configuration;

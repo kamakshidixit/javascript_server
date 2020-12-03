@@ -1,36 +1,34 @@
+import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
-import IRequest from '../../IRequest';
-import { Response , NextFunction } from 'express';
 import { hasPermission } from '../permissions';
+import IRequest from '../../IRequest';
 import configuration from '../../config/configuration';
-import { config } from 'dotenv/types';
-console.log('Json Web tokens', jwt);
 
-export default ( module: any , permissionType: string ) => ( req: IRequest, res: Response, next: NextFunction ) => {
+export const authMiddleWare = ( module, permissionType ) => (req: IRequest, res: Response, next: NextFunction ) => {
+    try {
 
-  try {
-  console.log( 'Inside ValidationHandler Middleware' );
-  console.log( 'config is', module, permissionType );
-  const token = req.headers.authorization;
-  console.log( token );
-  const User = jwt.verify( token, configuration.KEY );
-  console.log( 'user', User.result );
-  req.userData = User.result;
-  console.log( User.result.role );
-  const result = hasPermission ( module , User.result.role , permissionType );
-  console.log( 'result is', result );
-  if ( result === true )
-      next();
-  else {
-      next ( {
-          message: 'Unauthorised',
-          status: 403
-      } );
-  }
-  }
-  catch ( err ) {
-      next ( {
-          message: err
-      } );
-  }
+    console.log( 'the config is ' , module, permissionType );
+    console.log( 'Header is ' , req.headers.authorization);
+    const token = req.headers.authorization;
+    const decodedUser =  jwt.verify(token, configuration.SECRET);
+    console.log( 'User', decodedUser );
+    req.userData = decodedUser;
+    const irole = decodedUser.role;
+    console.log('Role is ', irole);
+    if ( irole ) {
+        if ( hasPermission( module, irole, permissionType )) {
+            console.log('true');
+            next();
+        }
+        else {
+            next( { error: 'Permission does not exist' } );
+        }
+    }
+    else {
+        next( { error: 'Role does not exist in token' } );
+        }
+ }
+ catch ( err ) {
+     next( { error: 'authentication failed' } );
+ }
 };
