@@ -5,6 +5,7 @@ class UserSchema extends VersionableSchema {
 
   constructor( collection ) {
     const baseSchema = Object.assign({
+       id: String,
       _id: String,
       name: String,
       email: String,
@@ -16,7 +17,6 @@ class UserSchema extends VersionableSchema {
 }
 
 export default UserSchema;
-
 
 
 

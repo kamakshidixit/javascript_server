@@ -5,6 +5,9 @@ import * as bcrypt from 'bcrypt';
 import VersionableRepository from '../versionable/VersionableRepository';
 
 export default class UserRepository extends VersionableRepository<IUserModel, mongoose.Model<IUserModel>> {
+  getAll: any;
+  searchUser: any;
+  create: any;
 
     constructor() {
         super(userModel);
