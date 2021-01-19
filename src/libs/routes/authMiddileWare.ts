@@ -1,34 +1,44 @@
 import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { hasPermission } from '../permissions';
+import UserRepository from '../../repositories/user/UserRepository';
 import IRequest from '../../IRequest';
 import configuration from '../../config/configuration';
 
-export const authMiddleWare = ( module, permissionType ) => (req: IRequest, res: Response, next: NextFunction ) => {
-    try {
+export default (moduleName: string, permissionType: string) => async (req: IRequest, res, next) => {
 
-    console.log( 'the config is ' , module, permissionType );
-    console.log( 'Header is ' , req.headers.authorization);
-    const token = req.headers.authorization;
-    const decodedUser =  jwt.verify(token, configuration.SECRET);
-    console.log( 'User', decodedUser );
-    req.userData = decodedUser;
-    const irole = decodedUser.role;
-    console.log('Role is ', irole);
-    if ( irole ) {
-        if ( hasPermission( module, irole, permissionType )) {
-            console.log('true');
-            next();
-        }
-        else {
-            next( { error: 'Permission does not exist' } );
-        }
-    }
-    else {
-        next( { error: 'Role does not exist in token' } );
-        }
- }
- catch ( err ) {
-     next( { error: 'authentication failed' } );
- }
+  const { headers : { authorization: token }} = req;
+  let userDetail;
+  const secret = configuration.SECRET_KEY;
+  if (!token) {
+      next({
+          message: 'Token not found',
+          error: 'Authentication failed',
+          status: 403
+      });
+  }
+
+  try {
+      const user = jwt.verify( token, secret);
+      userDetail = await UserRepository.readOne({ email: user.userData.email});
+      res.locals.userData = userDetail;
+
+      if (!hasPermission(moduleName, userDetail.role, permissionType)) {
+          next({
+              message: 'TRY permission denied',
+              error: 'Unauthorized Access',
+              status: 403
+          });
+      }
+      next();
+  }
+  catch (err) {
+      console.log(err);
+      next({
+          message: 'Catch User is unauthorized',
+          error: 'Unauthorized Access',
+          status: 403
+      });
+  }
+
 };

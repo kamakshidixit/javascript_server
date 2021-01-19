@@ -5,48 +5,36 @@ import * as bcrypt from 'bcrypt';
 import VersionableRepository from '../versionable/VersionableRepository';
 
 export default class UserRepository extends VersionableRepository<IUserModel, mongoose.Model<IUserModel>> {
-  getAll: any;
-  searchUser: any;
-  create: any;
 
-    constructor() {
-        super(userModel);
-    }
+  public static generateObjectId() {
+    return String(mongoose.Types.ObjectId());
+}
+constructor() {
+    super(userModel);
+}
+public static readOne(query): mongoose.DocumentQuery<IUserModel, IUserModel, {}> {
+    const finalQuery = { deletedAt: undefined, ...query };
+    return userModel.findOne(finalQuery).lean();
+}
 
-    public createUser(data, creator) {
-        const rawPassword = data.password;
-        console.log('rawPassword' , rawPassword);
-         const saltRounds = 10;
-         const salt = bcrypt.genSaltSync(saltRounds);
-         const hashedPassword = bcrypt.hashSync(rawPassword, salt);
-         data.password = hashedPassword;
-         console.log('data pass: ', data.password);
-         return super.createUser(data, creator);
-    }
-     public updateUser(id, data, updator) {
-       if ('password' in data) {
-         const rawPassword = data.password;
-         const saltRounds = 10;
-         const salt = bcrypt.genSaltSync(saltRounds);
-         const hashedPassword = bcrypt.hashSync(rawPassword, salt);
-         data.password = hashedPassword;
-     }
-         return super.update(id, data, updator);
-     }
+public async createUser(data: any): Promise<IUserModel> {
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(data.password, salt);
+    data.password = hashedPassword;
+    return await super.userCreate(data);
+}
 
-    public getUser(data) {
-        return super.getUser(data);
+public async updateUser(data: any): Promise<IUserModel> {
+    if ('password' in data) {
+        const salt = bcrypt.genSaltSync(10);
+        const hashedPassword = bcrypt.hashSync(data.password, salt);
+        data.password = hashedPassword;
     }
+    return await super.userUpdate(data);
+}
 
-    public deleteData(id, remover) {
-        return super.delete(id, remover);
-    }
+public countData() {
+    return userModel.countDocuments();
+}
 
-    public findone(data) {
-        return super.findOne(data);
-    }
-
-    public countData() {
-        return userModel.countDocuments();
-    }
 }

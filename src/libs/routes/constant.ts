@@ -1,3 +1,5 @@
+import { IPermissions, IUsers } from './interfaces';
+
 export const users: IUsers[] = [
   {
   traineeEmail: 'trainee1@successive.tech',

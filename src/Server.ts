@@ -8,6 +8,7 @@ import { disconnect } from 'process';
 import notFoundRoute from './libs/routes/notFoundRoute';
 import * as swaggerUI from 'swagger-ui-express';
 import * as swaggerJsDoc from 'swagger-jsdoc';
+import * as cors from 'cors';
 
 
 class Server {
@@ -55,6 +56,7 @@ class Server {
             res.send('i am ok');
         });
 
+        this.app.use(cors());
         this.app.use('/api', routes);
         this.app.use('swagger', swaggerUI.serve, swaggerUI.setup(this.initSwagger()));
 
@@ -74,7 +76,7 @@ class Server {
         Database.open(MONGO_URL)
         .then((res) => {
           console.log('successfully connected to mongo');
-        app.listen(PORT, (err) => {
+        this.app.listen(PORT, (err) => {
             if (err) {
                 console.log(err);
             }

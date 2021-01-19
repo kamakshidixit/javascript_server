@@ -15,3 +15,5 @@ interface IPermissions {
   getUsers: access;
   getAccess: access;
 }
+
+export { IPermissions, IUsers };

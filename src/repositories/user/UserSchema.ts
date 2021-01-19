@@ -5,8 +5,8 @@ class UserSchema extends VersionableSchema {
 
   constructor( collection ) {
     const baseSchema = Object.assign({
-       id: String,
       _id: String,
+      id: String,
       name: String,
       email: String,
       role: String,
