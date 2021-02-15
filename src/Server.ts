@@ -4,6 +4,7 @@ import { notFoundHandler, errorHandler } from './libs/routes';
 import routes from  './router';
 import Database from './libs/Database';
 import { disconnect } from 'process';
+import * as cors from 'cors';
 
 class Server {
 
@@ -17,6 +18,7 @@ class Server {
         return this;
     }
     SetupRoutes() {
+        this.app.use(cors());
         this.app.use('/health-check', (req, res, next) => {
             res.send('i am ok');
         });

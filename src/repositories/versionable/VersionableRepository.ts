@@ -10,6 +10,7 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
     this.model = model;
   }
   public async create(data: IUserModel): Promise<D> {
+    console.log('teret---', data);
     const id = VersionableRepository.generateObjectId();
     const model = new this.model({
       ...data,

@@ -7,9 +7,9 @@ const config = {
       custom (value) {
         console.log('Value', value);
         throw {
-          error: 'Error Occured',
-          message: 'Message'
-        };
+           error: 'Error Occured',
+           message: 'Message'
+         };
       }
     },
     name: {

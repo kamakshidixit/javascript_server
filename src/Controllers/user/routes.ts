@@ -6,7 +6,7 @@ import validation from './validation';
 import { authMiddleWare } from '../../libs/routes';
 import config from './validation';
 const userRouter = Router();
-userRouter.route('/')
+userRouter.route('/trainee')
 .get(userController.get)
 .post(userController.create)
 .put( userController.update);

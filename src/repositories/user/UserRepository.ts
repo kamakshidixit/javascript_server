@@ -16,6 +16,7 @@ public static findOne(query): mongoose.DocumentQuery<IUserModel, IUserModel, {}>
 return userModel.findOne(query).lean();
 }
 public create(data: any): Promise<IUserModel> {
+  console.log('check', data);
 return super.create(data);
 }
 public delete(id: string): Promise<IUserModel> {

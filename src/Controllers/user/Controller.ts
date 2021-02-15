@@ -22,7 +22,7 @@ class UserController {
       console.log(extractedData);
       res.status(200).send({
         message: 'User fetched successfully',
-        data: [extractedData],
+        data: extractedData,
         status: 'success',
       });
     } catch (err) {
@@ -31,8 +31,10 @@ class UserController {
   }
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log('hfhf--', req.body);
+    //  console.log('Params--', req.query);
       const result = await this.userRepository.create(req.body);
-      console.log(result);
+      console.log('vvbvb---', result);
       res.status(200).send({
         message: 'User created successfully',
         data: result,
@@ -71,7 +73,8 @@ class UserController {
   }
   login(req: Request, res: Response, next: NextFunction) {
     try {
-      const secretKey = configuration.secret;
+      const secretKey = configuration.SECRET;
+      console.log('dddd---', configuration);
       payload.email = req.body.email;
       payload.password = req.body.password;
       UserRepository.findOne({ email: req.body.email, passsword: req.body.passsword })
