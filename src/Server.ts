@@ -70,11 +70,11 @@ class Server {
       this.app.use(bodyparser.urlencoded({ extended: false }));
     }
     run() {
-        const { app, PORT, MONGO_URL } = this.config;
+        const { PORT, MONGO_URL } = this.config;
         Database.open(MONGO_URL)
         .then((res) => {
           console.log('successfully connected to mongo');
-        app.listen(PORT, (err) => {
+        this.app.listen(PORT, (err) => {
             if (err) {
                 console.log(err);
             }

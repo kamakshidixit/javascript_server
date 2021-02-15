@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import userController from '../../controllers/user/controller';
+import userController from './Controller';
 import validationHandler from '../../libs/validationHandler';
 import validation from './validation';
 import { authMiddleWare } from '../../libs/routes';
-import { hasPermission } from '../../libS/permissions';
+import { hasPermission } from '../../libs/permissions';
 const UserRouter = Router();
 /**
  * @swagger
