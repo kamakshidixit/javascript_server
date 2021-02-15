@@ -3,9 +3,6 @@ import { userModel } from './UserModel';
 import IUserModel from './IUserModel';
 import VersionableRepository from '../versionable/VersionableRepository';
 export default class UserRepository extends VersionableRepository<IUserModel, mongoose.Model<IUserModel>> {
-static delete(body: any) {
-  throw new Error('Method not implemented.');
-}
 public static generateObjectId() {
 return String(mongoose.Types.ObjectId());
 }
@@ -28,7 +25,7 @@ return super.update(data);
 public async get(query: any, projection: any, options: any): Promise<IUserModel[]> {
 return super.get(query, projection, options);
 }
-public count(query: any) {
-return super.count(query);
+public count() {
+  return userModel.countDocuments();
 }
 }
