@@ -3,20 +3,23 @@ import * as jwt from 'jsonwebtoken';
 import { hasPermission } from '../permissions';
 import IRequest from '../../IRequest';
 import configuration from '../../config/configuration';
+import {permissions}  from './constant'
 
 export const authMiddleWare = ( module, permissionType ) => (req: IRequest, res: Response, next: NextFunction ) => {
-    try {
+try {
 
-    console.log( 'the config is ' , module, permissionType );
-    console.log( 'Header is ' , req.headers.authorization);
+    
     const token = req.headers.authorization;
     const decodedUser =  jwt.verify(token, configuration.SECRET);
-    console.log( 'User', decodedUser );
     req.userData = decodedUser;
     const irole = decodedUser.role;
+
+    console.log( 'the config is ' , module, permissionType );
+    console.log( 'Decoded Token User', decodedUser );
     console.log('Role is ', irole);
+
     if ( irole ) {
-        if ( hasPermission( module, irole, permissionType )) {
+        if ( hasPermission( permissions[module], irole, permissionType )) {
             console.log('true');
             next();
         }

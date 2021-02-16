@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as bodyparser from 'body-parser';
+import * as cors from  'cors';
 import { IConfig } from './config/IConfig';
 import { notFoundHandler, errorHandler } from './libs/routes';
 import routes from  './router';
@@ -18,6 +19,7 @@ class Server {
     }
     bootstrap() {
       this.initBodyParser();
+      this.app.use(cors());
         this.SetupRoutes();
         return this;
     }
@@ -61,6 +63,7 @@ class Server {
 
 
         this.app.use(notFoundRoute);
+
 
         this.app.use(errorHandler);
     }
