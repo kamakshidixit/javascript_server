@@ -7,8 +7,7 @@ import {permissions}  from './constant'
 
 export const authMiddleWare = ( module, permissionType ) => (req: IRequest, res: Response, next: NextFunction ) => {
 try {
-
-    
+    console.log('inside authmiddleware');
     const token = req.headers.authorization;
     const decodedUser =  jwt.verify(token, configuration.SECRET);
     req.userData = decodedUser;

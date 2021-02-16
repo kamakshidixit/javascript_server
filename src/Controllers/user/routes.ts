@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import userController from './Controller';
-import validationHandler from '../../libs/validationHandler';
+import { validationHandler } from '../../libs/validationHandler';
 import validation from './validation';
 import { authMiddleWare } from '../../libs/routes';
 import { hasPermission } from '../../libs/permissions';
@@ -234,7 +234,7 @@ UserRouter.route('/')
    *         schema:
    *              $ref: '#/definitions/Unauthorized'
    */
-  .delete(authMiddleWare('getUsers', 'read'), validationHandler(validation.Delete), userController.delete);
+  .delete(authMiddleWare('getUsers', 'delete'), validationHandler(validation.Delete), userController.delete);
 
 /**
  * @swagger

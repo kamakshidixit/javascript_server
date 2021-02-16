@@ -56,14 +56,12 @@ class Server {
         this.app.use('/health-check', (req: Request, res: express.Response, next: express.NextFunction) => {
             res.send('i am ok');
         });
-
+        
         this.app.use('/api', routes);
+
         this.app.use('swagger', swaggerUI.serve, swaggerUI.setup(this.initSwagger()));
 
-
-
         this.app.use(notFoundRoute);
-
 
         this.app.use(errorHandler);
     }

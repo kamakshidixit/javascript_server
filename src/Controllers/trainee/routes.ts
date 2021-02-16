@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import traineeController from './Controller';
-import  validationHandler from '../../libs/validationHandler';
+import  { validationHandler } from '../../libs/validationHandler';
 import validation from './validation';
 import { authMiddleWare } from '../../libs/routes';
 import { config } from 'dotenv/types';

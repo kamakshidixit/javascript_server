@@ -40,7 +40,7 @@ public async get(req: IRequest, res: Response, next: NextFunction) {
           message: 'User fetched successfully',
           totalCount: await userRepository.count(req.body),
           count: extractedData.length,
-          data: [extractedData],
+          data: extractedData,
           status: 'success',
       });
 
@@ -109,10 +109,13 @@ public async update(req: IRequest, res: Response, next: NextFunction) {
 
 public async delete(req: IRequest, res: Response, next: NextFunction) {
   const  id  = req.params.id;
+  console.log(id);
   const remover = req.userData._id;
+  console.log(remover);
   const user = new UserRepository();
   try {
-     await user.deleteData(id, remover);
+     const s = await user.deleteData(id, remover);
+     console.log('66--', s);
      res.send({
        status: 'ok',
        message: 'User Deleted successfully',

@@ -1,7 +1,7 @@
 const config = {
   create: {
     id: {
-      required: true,
+      required: false,
       string: true,
       in: ['body'],
       custom (value) {
@@ -21,7 +21,7 @@ const config = {
   },
   Delete: {
     id: {
-      required: true,
+      required: false,
       errorMessage: 'Id is required',
       in: ['params']
     }
@@ -44,18 +44,18 @@ const config = {
   },
   update: {
     id: {
-      required: true,
+      required: false,
       string: true,
       in: ['body']
-    },
-    dataToUpdate: {
-      in: ['body'],
-      required: true,
-      isObject: true,
-      custom: (dataToUpdate) => {
-        console.log('dataToUpdate' , dataToUpdate);
     }
-  }
+    // dataToUpdate: {
+    //   in: ['body'],
+    //   required: false,
+    //   isObject: true,
+    //   custom: (dataToUpdate) => {
+    //     console.log('dataToUpdate' , dataToUpdate);
+    // }
+  // }
 },
 login: {
   email: {
