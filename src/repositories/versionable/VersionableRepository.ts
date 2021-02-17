@@ -54,34 +54,7 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
         return await this.model.create(model);
       }
 
-    // public async update(data: any): Promise<D> {
-    //   console.log('11--', data);
-    //   // const { originalId } = data;
-    //   console.log('gggggggggggggg', data.originalId);
-    //   const previous = await this.findOne({ originalId: data.originalId, deletedAt: undefined });
-
-    //   console.log('previous:. ', previous);
-
-    //   if (previous){
-
-
-    //       await this.invalid(data.originalId);
-    //   }
-    //   else {
-    //       return undefined;
-    //   }
-
-    //   const newData = Object.assign(JSON.parse(JSON.stringify(previous)), data);
-    //   console.log('33--', newData);
-    //   newData._id = VersionableRepository.generateObjectId();
-
-    //   delete newData.deletedAt;
-
-    //   const model = new this.model(newData);
-    //   console.log('absss--', model);
-    //   return await model.save();
-
-    // }
+    
     public invalidate(id: string): DocumentQuery<D, D> {
       const query: any = {originalId: id, deletedAt: { $exists: false } };
       const data: any = { deletedAt: Date.now() };
