@@ -45,7 +45,7 @@ class Server {
           },
           basePath: '/api',
           swagger: '4.1',
-          apis: ['./src/controllers/**/routes.ts'],
+          apis: ['./src/Controllers/**/routes.ts'],
       };
       const swaggerSpec = swaggerJsDoc(options);
       return swaggerSpec;
@@ -56,10 +56,10 @@ class Server {
         this.app.use('/health-check', (req: Request, res: express.Response, next: express.NextFunction) => {
             res.send('i am ok');
         });
-        
+
         this.app.use('/api', routes);
 
-        this.app.use('swagger', swaggerUI.serve, swaggerUI.setup(this.initSwagger()));
+        this.app.use('/swagger', swaggerUI.serve, swaggerUI.setup(this.initSwagger()));
 
         this.app.use(notFoundRoute);
 

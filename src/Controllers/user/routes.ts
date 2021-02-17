@@ -44,6 +44,7 @@ const UserRouter = Router();
  *               data:
  *                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5laGEuZ29lbEBzdWNjZXNzaXZlLnRlY2giLCJpZCI6IjVlNGEzNmJjNjQ4MjRiMWY4MGI3MzBjZCIsImlhdCI6MTU4MjU0OTIyN30.cFV6YYlfmhJ1yL3GyIIgb-PjMTpDNVICd5KGi1ENpVI
  */
+
 UserRouter.route('/')
   /**
    * @swagger
@@ -107,6 +108,7 @@ UserRouter.route('/')
    *         schema:
    *              $ref: '#/definitions/Unauthorized'
    */
+  
   .get(authMiddleWare('getUsers', 'read'), validationHandler(validation.get), userController.get)
   /**
    * @swagger
@@ -234,7 +236,8 @@ UserRouter.route('/')
    *         schema:
    *              $ref: '#/definitions/Unauthorized'
    */
-  .delete(authMiddleWare('getUsers', 'delete'), validationHandler(validation.Delete), userController.delete);
+  UserRouter.route('/:id')
+  .delete(userController.delete);
 
 /**
  * @swagger

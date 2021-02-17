@@ -53,17 +53,16 @@ public async get(req: IRequest, res: Response, next: NextFunction) {
 // To create a new user
 
 public async create(req: IRequest, res: Response, next: NextFunction) {
-  const { id, email, name, role, password } = req.body;
+  const { email, name, role, password } = req.body;
   const creator = req.userData._id;
   const user = new UserRepository();
   try {
-    const result = await user.create({id, email, name, role, password }, creator);
+    const result = await user.create({email, name, role, password }, creator);
     console.log(req.body);
     res.send({
       status: 'ok',
       message: 'User Created Successfully!',
       result: {
-        'id': id,
         'name': name,
         'email': email,
         'role': role,
@@ -83,39 +82,35 @@ public async create(req: IRequest, res: Response, next: NextFunction) {
 // To update the existing user data
 
 public async update(req: IRequest, res: Response, next: NextFunction) {
-  const { id, dataToUpdate } = req.body;
-  console.log('id', id);
-  console.log('dataToUpdate', dataToUpdate);
-  const updator = req.userData._id;
-  const user = new UserRepository();
-  try {
-    const result = await user.updateUser( id, dataToUpdate, updator);
-    res.send({
-      status: 'ok',
-      message: 'User Updated Successfully',
-      data: result,
 
-    });
-  }
-  catch (err) {
+  // const { originalId } = req.body;
+  console.log('000', req.body);
+  const user = new UserRepository();
+    const result = await user.userUpdate(req.body);
+    console.log('rsrsr--', result);
+    if(result){
+      res.send({
+        status: 'ok',
+        message: 'User Updated Successfully',
+        data: result,
+      });
+    }
     res.send({
-      error: 'User not found for update',
-      code: 404
+      error: 'Something went wrong',
+      code: 400
     });
-  }
 }
+
 
 // To delete the existing User
 
-public async delete(req: IRequest, res: Response, next: NextFunction) {
+public async delete(req: Request, res: Response, next: NextFunction) {
+  try {
   const  id  = req.params.id;
   console.log(id);
-  const remover = req.userData._id;
-  console.log(remover);
   const user = new UserRepository();
-  try {
-     const s = await user.deleteData(id, remover);
-     console.log('66--', s);
+    console.log('dsggffs');
+     const s = await user.deleteData(id);
      res.send({
        status: 'ok',
        message: 'User Deleted successfully',

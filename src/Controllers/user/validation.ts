@@ -47,14 +47,14 @@ const config = {
       required: false,
       string: true,
       in: ['body']
-    }
-    // dataToUpdate: {
-    //   in: ['body'],
-    //   required: false,
-    //   isObject: true,
-    //   custom: (dataToUpdate) => {
-    //     console.log('dataToUpdate' , dataToUpdate);
-    // }
+    },
+  //   dataToUpdate: {
+  //     in: ['body'],
+  //     required: true,
+  //     isObject: true,
+  //     custom: (dataToUpdate) => {
+  //       console.log('dataToUpdate' , dataToUpdate);
+  //   }
   // }
 },
 login: {
