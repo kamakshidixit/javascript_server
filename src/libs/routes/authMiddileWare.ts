@@ -17,6 +17,7 @@ try {
     console.log( 'Decoded Token User', decodedUser );
     console.log('Role is ', irole);
 
+    console.log( hasPermission( permissions[module], irole, permissionType ))
     if ( irole ) {
         if ( hasPermission( permissions[module], irole, permissionType )) {
             console.log('true');

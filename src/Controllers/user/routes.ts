@@ -108,7 +108,7 @@ UserRouter.route('/')
    *         schema:
    *              $ref: '#/definitions/Unauthorized'
    */
-  
+
   .get(authMiddleWare('getUsers', 'read'), validationHandler(validation.get), userController.get)
   /**
    * @swagger
@@ -147,7 +147,7 @@ UserRouter.route('/')
    *                      properties:
    *                              name:
    *                                  type: string
-   *                                  example: "HarshRastogi"
+   *                                  example: "Kamakshi Dixit"
    *       403:
    *         description: unauthorised access
    *         schema:
